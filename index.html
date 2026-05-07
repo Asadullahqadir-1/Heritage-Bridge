@@ -1,9 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Heritage Bridge Advisory â€” Diaspora Investment in East Africa</title>
+  <title>Heritage Bridge Advisory - Diaspora Investment in East Africa</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
@@ -30,7 +30,7 @@
       overflow-x: hidden;
     }
 
-    /* â”€â”€â”€ NAVBAR â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+    /* NAV */
     nav {
       position: fixed;
       top: 0; left: 0; right: 0;
@@ -58,10 +58,6 @@
       display: block;
       object-fit: contain;
       border-radius: 4px;
-    }
-
-    .nav-logo-text {
-      display: none;
     }
 
     .nav-links {
@@ -109,7 +105,7 @@
       transition: 0.3s;
     }
 
-    /* â”€â”€â”€ HERO â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+    /* HERO */
     #hero {
       min-height: 100vh;
       background: var(--charcoal);
@@ -159,12 +155,6 @@
       margin-bottom: 28px;
     }
 
-    .hero-eyebrow::before {
-      content: '+';
-      font-size: 16px;
-      color: var(--cream);
-    }
-
     .hero-headline {
       font-family: 'Playfair Display', serif;
       font-size: clamp(36px, 4.5vw, 58px);
@@ -204,11 +194,7 @@
       width: fit-content;
     }
 
-    .btn-primary:hover {
-      background: var(--white);
-    }
-
-    .btn-primary .arrow { font-size: 16px; }
+    .btn-primary:hover { background: var(--white); }
 
     .hero-values {
       margin-top: 60px;
@@ -230,22 +216,18 @@
 
     .hero-right {
       position: relative;
-      background: var(--charcoal);
+      background: var(--cream);
       overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .hero-right img {
       width: 100%;
       height: 100%;
-      object-fit: cover;
-      object-position: center top;
-      filter: grayscale(20%) contrast(1.05);
-    }
-
-    .hero-right-overlay {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(135deg, rgba(122,46,38,0.25) 0%, transparent 60%);
+      object-fit: contain;
+      padding: 40px;
     }
 
     .hero-location-badge {
@@ -273,7 +255,7 @@
       text-transform: none;
     }
 
-    /* â”€â”€â”€ SECTION SHARED â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+    /* SECTIONS */
     section { width: 100%; }
 
     .section-inner {
@@ -294,16 +276,8 @@
       margin-bottom: 20px;
     }
 
-    .section-label::before {
-      content: '+';
-      font-size: 16px;
-      color: var(--burgundy);
-    }
-
-    /* â”€â”€â”€ ABOUT â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
-    #about {
-      background: var(--cream);
-    }
+    /* ABOUT */
+    #about { background: var(--cream); }
 
     .about-grid {
       display: grid;
@@ -384,10 +358,8 @@
       z-index: -1;
     }
 
-    /* â”€â”€â”€ SERVICES â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
-    #services {
-      background: var(--charcoal);
-    }
+    /* SERVICES */
+    #services { background: var(--charcoal); }
 
     .services-header {
       display: flex;
@@ -442,9 +414,7 @@
 
     .service-card:hover .service-card-img { filter: brightness(1); }
 
-    .service-card-body {
-      padding: 28px 24px 32px;
-    }
+    .service-card-body { padding: 28px 24px 32px; }
 
     .service-card-index {
       font-size: 11px;
@@ -488,10 +458,8 @@
 
     .btn-ghost:hover { color: var(--burgundy-light); border-color: var(--burgundy-light); }
 
-    /* â”€â”€â”€ GALLERY â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
-    #gallery {
-      background: var(--cream);
-    }
+    /* GALLERY */
+    #gallery { background: var(--cream); }
 
     .gallery-header {
       text-align: center;
@@ -519,7 +487,6 @@
     .gallery-masonry {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      grid-template-rows: auto;
       gap: 16px;
     }
 
@@ -543,9 +510,6 @@
       filter: brightness(1) saturate(1);
     }
 
-    .gallery-item.tall { grid-row: span 2; }
-    .gallery-item.wide { grid-column: span 2; }
-
     .gallery-item:nth-child(1) { height: 280px; }
     .gallery-item:nth-child(2) { height: 280px; }
     .gallery-item:nth-child(3) { height: 580px; grid-row: span 2; }
@@ -566,10 +530,8 @@
 
     .gallery-item:hover .gallery-caption { opacity: 1; }
 
-    /* â”€â”€â”€ VALUES â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
-    #values {
-      background: var(--burgundy-dark);
-    }
+    /* VALUES */
+    #values { background: var(--burgundy-dark); }
 
     .values-grid {
       display: grid;
@@ -579,7 +541,6 @@
     }
 
     .values-text .section-label { color: rgba(241,234,224,0.5); }
-    .values-text .section-label::before { color: var(--cream); }
 
     .values-text h2 {
       font-family: 'Playfair Display', serif;
@@ -599,7 +560,6 @@
     .values-list {
       display: flex;
       flex-direction: column;
-      gap: 0;
     }
 
     .value-row {
@@ -635,10 +595,8 @@
       color: rgba(241, 234, 224, 0.55);
     }
 
-    /* â”€â”€â”€ CONTACT â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
-    #contact {
-      background: var(--cream);
-    }
+    /* CONTACT */
+    #contact { background: var(--cream); }
 
     .contact-grid {
       display: grid;
@@ -707,9 +665,7 @@
       gap: 16px;
     }
 
-    .form-group {
-      margin-bottom: 20px;
-    }
+    .form-group { margin-bottom: 20px; }
 
     .form-group label {
       display: block;
@@ -738,15 +694,11 @@
     }
 
     .form-group input::placeholder,
-    .form-group textarea::placeholder {
-      color: rgba(139, 133, 128, 0.5);
-    }
+    .form-group textarea::placeholder { color: rgba(139, 133, 128, 0.5); }
 
     .form-group input:focus,
     .form-group select:focus,
-    .form-group textarea:focus {
-      border-color: var(--burgundy);
-    }
+    .form-group textarea:focus { border-color: var(--burgundy); }
 
     .form-group select option { background: #2A2A2A; }
 
@@ -769,16 +721,13 @@
 
     .btn-submit:hover { background: var(--burgundy-light); }
 
-    /* â”€â”€â”€ FOOTER â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+    /* FOOTER */
     footer {
       background: var(--charcoal);
       padding: 48px 5% 32px;
     }
 
-    .footer-inner {
-      max-width: 1200px;
-      margin: 0 auto;
-    }
+    .footer-inner { max-width: 1200px; margin: 0 auto; }
 
     .footer-top {
       display: grid;
@@ -837,77 +786,41 @@
 
     .footer-bottom a:hover { color: var(--stone); }
 
-    /* â”€â”€â”€ RESPONSIVE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+    /* RESPONSIVE */
     @media (max-width: 900px) {
       #hero { grid-template-columns: 1fr; }
-
-      .hero-right {
-        height: 380px;
-        order: -1;
-      }
-
+      .hero-right { height: 380px; order: -1; }
       .hero-left { padding: 60px 6%; }
-
-      .about-grid,
-      .values-grid,
-      .contact-grid { grid-template-columns: 1fr; gap: 48px; }
-
+      .about-grid, .values-grid, .contact-grid { grid-template-columns: 1fr; gap: 48px; }
       .about-image-wrap { order: -1; }
-
       .services-grid { grid-template-columns: 1fr; }
-
-      .services-header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 16px;
-      }
-
+      .services-header { flex-direction: column; align-items: flex-start; gap: 16px; }
       .services-header p { text-align: left; }
-
-      .gallery-masonry {
-        grid-template-columns: 1fr 1fr;
-      }
-
-      .gallery-item:nth-child(3) {
-        grid-column: span 1;
-        grid-row: span 1;
-        height: 280px;
-      }
-
+      .gallery-masonry { grid-template-columns: 1fr 1fr; }
+      .gallery-item:nth-child(3) { grid-column: span 1; grid-row: span 1; height: 280px; }
       .footer-top { grid-template-columns: 1fr 1fr; gap: 40px; }
-
       .nav-links { display: none; }
       .hamburger { display: flex; }
     }
 
     @media (max-width: 600px) {
       .section-inner { padding: 72px 5%; }
-
       .gallery-masonry { grid-template-columns: 1fr; }
-
       .gallery-item { height: 240px !important; grid-row: span 1 !important; }
-
       .form-row { grid-template-columns: 1fr; }
-
       .footer-top { grid-template-columns: 1fr; }
-
       .footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
-
       .about-stats { grid-template-columns: 1fr 1fr; }
     }
 
-    /* â”€â”€â”€ SCROLL ANIMATIONS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+    /* ANIMATIONS */
     .fade-up {
       opacity: 0;
       transform: translateY(28px);
       transition: opacity 0.65s ease, transform 0.65s ease;
     }
 
-    .fade-up.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
     .fade-up-delay-1 { transition-delay: 0.1s; }
     .fade-up-delay-2 { transition-delay: 0.2s; }
     .fade-up-delay-3 { transition-delay: 0.3s; }
@@ -915,42 +828,34 @@
 </head>
 <body>
 
-  <!-- â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ NAVBAR â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
+  <!-- NAVBAR -->
   <nav id="navbar">
     <a href="#hero" class="nav-logo">
       <img class="nav-logo-mark" src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/2wBDAQkJCQwLDBgNDRgyIRwhMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjL/wgARCALCAsoDASIAAhEBAxEB/8QAGgABAAIDAQAAAAAAAAAAAAAAAAQFAgMGAf/EABcBAQEBAQAAAAAAAAAAAAAAAAABAgP/2gAMAwEAAhADEAAAAr8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACusfI5jbDss97fca4I0kcz5lrz3sFy1w533oOdLiXxfTk0UAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAByNjW2WO96N8AOawzwx36gb4IM6uObtKu6i7FAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAcjZRt+O97p5ny56TKh2pK168y8Uke87nnNcgy6SJOAoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB57Cin2btk6zJXq8grmsfMI6sV5WWg4uyzqY7VW2VAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAcjY11jjvejfADl8csI6sUBU0FtUxcXtRZG1oG9q2gUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAxygRz1jt9na5atuuIjHO67NFznSC3q8MyjsLneV3k7POoGcnwj+yN1mQ1AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACHlEpFEpH8JKP4SWrUSkL2piPqJrRgSmnUS0bwlInhMR9JORZQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABh5sRgzGLJWDNGDNWDMa8shgzHmGwY++jBmMPNgxyAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/9oADAMBAAIAAwAAACHzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz/AL++F/6y88888888888888888888888888888888888888d88B8sS88888888888888888888888888888888888884G4+im2y8888888888888888888888888888888888888rVf8ALvLOnPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPKFfPDvPIvt8vPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPLwdOPolloutfPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPN+899tONNOMNNPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPrvDrLLDHDHPHPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP/2gAMAwEAAgADAAAAEPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPBwTi44ukvPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPKPvPL1OFPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPLAOqbfmtvPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPFgWvNPPClPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPLNvPLPPEJTDvPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPC/AOIooi2QZvPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPCU7us/NPPNPNOPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPH33P8Awzywzxxzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz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" alt="Heritage Bridge Advisory" />
     </a>
-
     <ul class="nav-links">
       <li><a href="#about">About Us</a></li>
       <li><a href="#services">Services</a></li>
       <li><a href="#gallery">Gallery</a></li>
       <li><a href="#contact" class="nav-cta">Contact Us</a></li>
     </ul>
-
     <div class="hamburger" id="hamburger" aria-label="Open menu">
       <span></span><span></span><span></span>
     </div>
   </nav>
 
-  <!-- â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ HERO â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
+  <!-- HERO -->
   <section id="hero">
     <div class="hero-left">
       <div class="hero-eyebrow">Connecting Diaspora to Opportunity</div>
-
       <h1 class="hero-headline">
         We bridge your<br/>
         vision to <em>East Africa.</em>
       </h1>
-
       <p class="hero-sub">
         Heritage Bridge Advisory is a trusted advisory firm dedicated to helping East African diaspora communities identify, evaluate, and invest in high-potential opportunities back home.
       </p>
-
-      <a href="#contact" class="btn-primary">
-        Start Your Journey <span class="arrow">â†’</span>
-      </a>
-
+      <a href="#contact" class="btn-primary">Start Your Journey</a>
       <div class="hero-values">
         <div class="hero-value-item">Integrity</div>
         <div class="hero-value-item">Transparency</div>
@@ -959,35 +864,27 @@
     </div>
 
     <div class="hero-right">
-      <img
-        src="data:image/jpeg;base64,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AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/9oADAMBAAIAAwAAACHzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz/AL++F/6y88888888888888888888888888888888888888d88B8sS88888888888888888888888888888888888884G4+im2y8888888888888888888888888888888888888rVf8ALvLOnPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPKFfPDvPIvt8vPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPLwdOPolloutfPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPN+899tONNOMNNPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPrvDrLLDHDHPHPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP/2gAMAwEAAgADAAAAEPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPBwTi44ukvPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPKPvPL1OFPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPLAOqbfmtvPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPFgWvNPPClPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPLNvPLPPEJTDvPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPC/AOIooi2QZvPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPCU7us/NPPNPNOPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPH33P8Awzywzxxzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz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"
-        alt="Heritage Bridge Advisory"
-        style="object-fit: contain; background: #F1EAE0; padding: 40px;"
-      />
-      <div class="hero-right-overlay"></div>
+      <img src="data:image/jpeg;base64,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AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/9oADAMBAAIAAwAAACHzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz/AL++F/6y88888888888888888888888888888888888888d88B8sS88888888888888888888888888888888888884G4+im2y8888888888888888888888888888888888888rVf8ALvLOnPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPKFfPDvPIvt8vPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPLwdOPolloutfPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPN+899tONNOMNNPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPrvDrLLDHDHPHPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP/2gAMAwEAAgADAAAAEPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPBwTi44ukvPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPKPvPL1OFPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPLAOqbfmtvPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPFgWvNPPClPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPLNvPLPPEJTDvPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPC/AOIooi2QZvPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPCU7us/NPPNPNOPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPH33P8Awzywzxxzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz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" alt="Heritage Bridge Advisory" />
       <div class="hero-location-badge">
         <strong>East Africa</strong>
-        Kenya Â· Tanzania Â· Uganda Â· Rwanda
+        Kenya &middot; Tanzania &middot; Uganda &middot; Rwanda
       </div>
     </div>
   </section>
 
-  <!-- â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ ABOUT â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
+  <!-- ABOUT -->
   <section id="about">
     <div class="section-inner">
       <div class="about-grid">
         <div class="about-text">
           <div class="section-label fade-up">About Us</div>
-          <h2 class="fade-up fade-up-delay-1">
-            We champion your cause and amplify your impact.
-          </h2>
+          <h2 class="fade-up fade-up-delay-1">We champion your cause and amplify your impact.</h2>
           <p class="fade-up fade-up-delay-2">
-            At Heritage Bridge Advisory, we understand the unique challenges faced by East African diaspora members who want to invest back home. Distance, information gaps, and trust barriers can make the process daunting â€” we remove those obstacles.
+            At Heritage Bridge Advisory, we understand the unique challenges faced by East African diaspora members who want to invest back home. Distance, information gaps, and trust barriers can make the process daunting - we remove those obstacles.
           </p>
           <p class="fade-up fade-up-delay-2">
-            Our team of on-the-ground advisors and diaspora specialists work together to evaluate opportunities, navigate local regulations, and connect you with verified partners â€” so you can invest with confidence from wherever you are in the world.
+            Our team of on-the-ground advisors and diaspora specialists work together to evaluate opportunities, navigate local regulations, and connect you with verified partners - so you can invest with confidence from wherever you are in the world.
           </p>
-
           <div class="about-stats">
             <div class="stat-card fade-up fade-up-delay-1">
               <div class="stat-number">4<span>+</span></div>
@@ -1007,19 +904,15 @@
             </div>
           </div>
         </div>
-
         <div class="about-image-wrap fade-up fade-up-delay-2">
-          <img
-            src="https://picsum.photos/seed/aboutmeeting/800/520"
-            alt="East Africa investment â€” business meeting"
-          />
+          <img src="https://picsum.photos/seed/aboutmeeting/800/520" alt="Business meeting" />
           <div class="about-image-accent"></div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ SERVICES â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
+  <!-- SERVICES -->
   <section id="services">
     <div class="section-inner">
       <div class="services-header">
@@ -1031,113 +924,80 @@
           From initial opportunity scoping to deal execution, we provide end-to-end support for diaspora investors at every stage.
         </p>
       </div>
-
       <div class="services-grid">
         <div class="service-card fade-up">
-          <img
-            class="service-card-img"
-            src="https://picsum.photos/seed/realestate/700/300"
-            alt="Real Estate Investment"
-          />
+          <img class="service-card-img" src="https://picsum.photos/seed/realestate/700/300" alt="Real Estate" />
           <div class="service-card-body">
             <div class="service-card-index">01</div>
             <h3 class="service-card-title">Real Estate &amp; Land Advisory</h3>
-            <p class="service-card-desc">
-              Navigate property acquisition in Kenya, Tanzania, Uganda, and Rwanda with verified listings, legal due diligence, and title verification â€” from abroad, securely.
-            </p>
-            <a href="#contact" class="btn-ghost">Learn More â†’</a>
+            <p class="service-card-desc">Navigate property acquisition in Kenya, Tanzania, Uganda, and Rwanda with verified listings, legal due diligence, and title verification - from abroad, securely.</p>
+            <a href="#contact" class="btn-ghost">Learn More</a>
           </div>
         </div>
-
         <div class="service-card fade-up fade-up-delay-1">
-          <img
-            class="service-card-img"
-            src="https://picsum.photos/seed/businesssetup/700/300"
-            alt="Business Setup"
-          />
+          <img class="service-card-img" src="https://picsum.photos/seed/businesssetup/700/300" alt="Business Setup" />
           <div class="service-card-body">
             <div class="service-card-index">02</div>
             <h3 class="service-card-title">Business Setup &amp; Registration</h3>
-            <p class="service-card-desc">
-              From company incorporation to licensing and compliance, we handle the bureaucratic complexity so you can focus on your business vision and growth strategy.
-            </p>
-            <a href="#contact" class="btn-ghost">Learn More â†’</a>
+            <p class="service-card-desc">From company incorporation to licensing and compliance, we handle the bureaucratic complexity so you can focus on your business vision and growth strategy.</p>
+            <a href="#contact" class="btn-ghost">Learn More</a>
           </div>
         </div>
-
         <div class="service-card fade-up fade-up-delay-2">
-          <img
-            class="service-card-img"
-            src="https://picsum.photos/seed/portfolio/700/300"
-            alt="Investment Portfolio"
-          />
+          <img class="service-card-img" src="https://picsum.photos/seed/portfolio/700/300" alt="Portfolio Management" />
           <div class="service-card-body">
             <div class="service-card-index">03</div>
             <h3 class="service-card-title">Investment Portfolio Management</h3>
-            <p class="service-card-desc">
-              We monitor and manage your East African investment portfolio, providing regular reporting, risk assessments, and strategic guidance to maximize returns.
-            </p>
-            <a href="#contact" class="btn-ghost">Learn More â†’</a>
+            <p class="service-card-desc">We monitor and manage your East African investment portfolio, providing regular reporting, risk assessments, and strategic guidance to maximize returns.</p>
+            <a href="#contact" class="btn-ghost">Learn More</a>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ GALLERY â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
+  <!-- GALLERY -->
   <section id="gallery">
     <div class="section-inner">
       <div class="gallery-header">
         <div class="section-label fade-up">East Africa</div>
         <h2 class="fade-up fade-up-delay-1">The land of opportunity</h2>
-        <p class="fade-up fade-up-delay-2">
-          From the highlands of Kenya to the shores of Tanzania â€” a continent rich in potential waiting for visionary investors.
-        </p>
+        <p class="fade-up fade-up-delay-2">From the highlands of Kenya to the shores of Tanzania - a continent rich in potential waiting for visionary investors.</p>
       </div>
-
       <div class="gallery-masonry">
         <div class="gallery-item fade-up">
           <img src="https://picsum.photos/seed/nairobi/700/400" alt="Nairobi skyline" />
           <div class="gallery-caption">Nairobi, Kenya</div>
         </div>
-
         <div class="gallery-item fade-up fade-up-delay-1">
-          <img src="https://picsum.photos/seed/rwanda/700/400" alt="Modern African architecture" />
+          <img src="https://picsum.photos/seed/rwanda/700/400" alt="Modern architecture" />
           <div class="gallery-caption">Modern Architecture, Rwanda</div>
         </div>
-
         <div class="gallery-item fade-up fade-up-delay-2" style="grid-row: span 2; height: auto;">
           <img src="https://picsum.photos/seed/eastafrica/700/800" alt="East African landscape" style="height:100%; min-height:300px;" />
           <div class="gallery-caption">East African Landscape</div>
         </div>
-
         <div class="gallery-item fade-up fade-up-delay-1">
-          <img src="https://picsum.photos/seed/tanzania/700/400" alt="African market" />
+          <img src="https://picsum.photos/seed/tanzania/700/400" alt="Business district" />
           <div class="gallery-caption">Business District, Tanzania</div>
         </div>
-
         <div class="gallery-item fade-up fade-up-delay-2">
-          <img src="https://picsum.photos/seed/uganda/700/400" alt="Aerial Africa" />
+          <img src="https://picsum.photos/seed/uganda/700/400" alt="Aerial view" />
           <div class="gallery-caption">Aerial View, Uganda</div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ VALUES â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
+  <!-- VALUES -->
   <section id="values">
     <div class="section-inner">
       <div class="values-grid">
         <div class="values-text">
           <div class="section-label fade-up">Our Values</div>
-          <h2 class="fade-up fade-up-delay-1">
-            Our core values are the foundation of everything we do.
-          </h2>
-          <p class="fade-up fade-up-delay-2">
-            Every decision we make, every recommendation we give, is guided by a commitment to the communities we serve â€” both in the diaspora and on the ground in East Africa.
-          </p>
+          <h2 class="fade-up fade-up-delay-1">Our core values are the foundation of everything we do.</h2>
+          <p class="fade-up fade-up-delay-2">Every decision we make, every recommendation we give, is guided by a commitment to the communities we serve - both in the diaspora and on the ground in East Africa.</p>
         </div>
-
         <div class="values-list">
           <div class="value-row fade-up">
             <span class="value-num">01</span>
@@ -1150,7 +1010,7 @@
             <span class="value-num">02</span>
             <div class="value-content">
               <h3>Transparency</h3>
-              <p>You receive full documentation, verified due diligence reports, and honest assessments â€” no hidden fees, no surprises.</p>
+              <p>You receive full documentation, verified due diligence reports, and honest assessments - no hidden fees, no surprises.</p>
             </div>
           </div>
           <div class="value-row fade-up fade-up-delay-2">
@@ -1164,7 +1024,7 @@
             <span class="value-num">04</span>
             <div class="value-content">
               <h3>Empowerment</h3>
-              <p>We don't just execute deals â€” we educate and equip you to make informed decisions independently over time.</p>
+              <p>We don't just execute deals - we educate and equip you to make informed decisions independently over time.</p>
             </div>
           </div>
         </div>
@@ -1172,42 +1032,36 @@
     </div>
   </section>
 
-  <!-- â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ CONTACT â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
+  <!-- CONTACT -->
   <section id="contact">
     <div class="section-inner">
       <div class="contact-grid">
         <div class="contact-info">
           <div class="section-label fade-up">Contact Us</div>
           <h2 class="fade-up fade-up-delay-1">Ready to invest in your roots?</h2>
-          <p class="fade-up fade-up-delay-2">
-            Whether you're exploring your first investment or scaling an existing portfolio, our team is ready to guide you. Reach out and let's start the conversation.
-          </p>
-
+          <p class="fade-up fade-up-delay-2">Whether you're exploring your first investment or scaling an existing portfolio, our team is ready to guide you. Reach out and let's start the conversation.</p>
           <div class="contact-detail fade-up">
-            <div class="contact-icon">ðŸ“</div>
+            <div class="contact-icon">&#128205;</div>
             <div class="contact-detail-text">
               <strong>Office</strong>
               <span>Nairobi, Kenya &amp; London, UK</span>
             </div>
           </div>
-
           <div class="contact-detail fade-up fade-up-delay-1">
-            <div class="contact-icon">âœ‰ï¸</div>
+            <div class="contact-icon">&#9993;</div>
             <div class="contact-detail-text">
               <strong>Email</strong>
               <span>hello@heritagebridgeadvisory.com</span>
             </div>
           </div>
-
           <div class="contact-detail fade-up fade-up-delay-2">
-            <div class="contact-icon">ðŸ“ž</div>
+            <div class="contact-icon">&#128222;</div>
             <div class="contact-detail-text">
               <strong>Phone</strong>
               <span>+254 700 000 000</span>
             </div>
           </div>
         </div>
-
         <div class="contact-form fade-up fade-up-delay-1">
           <form id="contactForm" onsubmit="handleSubmit(event)">
             <div class="form-row">
@@ -1220,17 +1074,14 @@
                 <input type="text" placeholder="Kamau" required />
               </div>
             </div>
-
             <div class="form-group">
               <label>Email Address</label>
               <input type="email" placeholder="john@example.com" required />
             </div>
-
             <div class="form-group">
               <label>Country of Residence</label>
               <input type="text" placeholder="e.g. United Kingdom, USA, Canada" />
             </div>
-
             <div class="form-group">
               <label>Service of Interest</label>
               <select>
@@ -1241,30 +1092,27 @@
                 <option>General Consultation</option>
               </select>
             </div>
-
             <div class="form-group">
               <label>Message</label>
               <textarea rows="4" placeholder="Tell us about your investment goals..."></textarea>
             </div>
-
-            <button type="submit" class="btn-submit">Send Message â†’</button>
+            <button type="submit" class="btn-submit">Send Message</button>
           </form>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ FOOTER â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
+  <!-- FOOTER -->
   <footer>
     <div class="footer-inner">
       <div class="footer-top">
         <div class="footer-brand">
-          <a href="#hero" class="nav-logo" style="margin-bottom:0;">
+          <a href="#hero" class="nav-logo">
             <img src="data:image/jpeg;base64,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AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/9oADAMBAAIAAwAAACHzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz/AL++F/6y88888888888888888888888888888888888888d88B8sS88888888888888888888888888888888888884G4+im2y8888888888888888888888888888888888888rVf8ALvLOnPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPKFfPDvPIvt8vPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPLwdOPolloutfPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPN+899tONNOMNNPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPrvDrLLDHDHPHPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP/2gAMAwEAAgADAAAAEPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPBwTi44ukvPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPKPvPL1OFPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPLAOqbfmtvPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPFgWvNPPClPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPLNvPLPPEJTDvPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPC/AOIooi2QZvPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPCU7us/NPPNPNOPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPH33P8Awzywzxxzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz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" alt="Heritage Bridge Advisory" style="height:52px; width:auto; object-fit:contain;" />
           </a>
-          <p>Connecting the East African diaspora to transformative investment opportunities back home â€” with integrity, expertise, and heart.</p>
+          <p>Connecting the East African diaspora to transformative investment opportunities back home - with integrity, expertise, and heart.</p>
         </div>
-
         <div class="footer-col">
           <h4>Navigation</h4>
           <ul>
@@ -1274,7 +1122,6 @@
             <li><a href="#contact">Contact</a></li>
           </ul>
         </div>
-
         <div class="footer-col">
           <h4>Focus Regions</h4>
           <ul>
@@ -1285,7 +1132,6 @@
           </ul>
         </div>
       </div>
-
       <div class="footer-bottom">
         <span>&copy; 2026 Heritage Bridge Advisory. All rights reserved.</span>
         <span>Designed with purpose for the diaspora.</span>
@@ -1294,58 +1140,41 @@
   </footer>
 
   <script>
-    // â”€â”€ Scroll-based fade-in animations â”€â”€
     const observer = new IntersectionObserver(
       (entries) => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }),
       { threshold: 0.12 }
     );
     document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
 
-    // â”€â”€ Navbar background on scroll â”€â”€
     const navbar = document.getElementById('navbar');
     window.addEventListener('scroll', () => {
-      navbar.style.background = window.scrollY > 40
-        ? 'rgba(26,26,26,0.97)'
-        : 'var(--charcoal)';
+      navbar.style.background = window.scrollY > 40 ? 'rgba(26,26,26,0.97)' : 'var(--charcoal)';
     });
 
-    // â”€â”€ Mobile hamburger (simple toggle) â”€â”€
     const hamburger = document.getElementById('hamburger');
     hamburger.addEventListener('click', () => {
       const links = document.querySelector('.nav-links');
       if (links.style.display === 'flex') {
         links.style.display = '';
       } else {
-        links.style.cssText = `
-          display: flex;
-          flex-direction: column;
-          position: fixed;
-          top: 72px; left: 0; right: 0;
-          background: rgba(26,26,26,0.98);
-          padding: 24px 5%;
-          gap: 20px;
-          border-top: 1px solid rgba(255,255,255,0.07);
-        `;
+        links.style.cssText = 'display:flex;flex-direction:column;position:fixed;top:72px;left:0;right:0;background:rgba(26,26,26,0.98);padding:24px 5%;gap:20px;border-top:1px solid rgba(255,255,255,0.07);';
       }
     });
 
-    // Close mobile menu on link click
     document.querySelectorAll('.nav-links a').forEach(link => {
       link.addEventListener('click', () => {
-        const links = document.querySelector('.nav-links');
-        if (window.innerWidth <= 900) links.style.display = '';
+        if (window.innerWidth <= 900) document.querySelector('.nav-links').style.display = '';
       });
     });
 
-    // â”€â”€ Contact form submission â”€â”€
     function handleSubmit(e) {
       e.preventDefault();
       const btn = e.target.querySelector('.btn-submit');
-      btn.textContent = 'Message Sent âœ“';
+      btn.textContent = 'Message Sent!';
       btn.style.background = '#2E6E3E';
       btn.disabled = true;
       setTimeout(() => {
-        btn.textContent = 'Send Message â†’';
+        btn.textContent = 'Send Message';
         btn.style.background = '';
         btn.disabled = false;
         e.target.reset();
