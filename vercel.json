@@ -1,23 +1,21 @@
 {
   "version": 2,
-  "builds": [
+  "rewrites": [
     {
-      "src": "**/*.html",
-      "use": "@vercel/static"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/admin/?",
-      "dest": "/aadmin/index.html"
+      "source": "/admin",
+      "destination": "/aadmin/index.html"
     },
     {
-      "src": "/aadmin/?",
-      "dest": "/aadmin/index.html"
+      "source": "/admin/",
+      "destination": "/aadmin/index.html"
     },
     {
-      "src": "/(.*)",
-      "dest": "/$1"
+      "source": "/aadmin",
+      "destination": "/aadmin/index.html"
+    },
+    {
+      "source": "/aadmin/",
+      "destination": "/aadmin/index.html"
     }
   ]
 }
