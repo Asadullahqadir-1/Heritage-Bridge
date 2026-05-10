@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Heritage Bridge Admin</title>
+  <style>
+    :root {
+      --bg: #10161c;
+      --panel: #18222c;
+      --panel-soft: #1f2b37;
+      --border: #2f4050;
+      --text: #eaf0f6;
+      --muted: #9db0c3;
+      --accent: #ad392d;
+      --accent-dark: #8f2b21;
+      --danger: #b83333;
+      --ok: #2f8554;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Segoe UI", Tahoma, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(900px 450px at 95% -10%, rgba(173, 57, 45, 0.28), transparent),
+        radial-gradient(700px 350px at -5% 30%, rgba(37, 84, 126, 0.22), transparent),
+        var(--bg);
+      padding: 18px;
+    }
+
+    .wrap {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .card {
+      background: linear-gradient(180deg, var(--panel), var(--panel-soft));
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 18px 36px rgba(0, 0, 0, 0.34);
+    }
+
+    .hidden { display: none; }
+
+    .kicker {
+      margin: 0 0 8px;
+      color: var(--muted);
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(28px, 4vw, 42px);
+      line-height: 1.15;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: clamp(20px, 2vw, 28px);
+      line-height: 1.2;
+    }
+
+    .sub {
+      margin: 10px 0 0;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .grid-2 {
+      margin-top: 14px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--muted);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    input[type="text"],
+    input[type="password"] {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: #0f161d;
+      color: var(--text);
+      padding: 11px 12px;
+      font-size: 14px;
+      outline: none;
+    }
+
+    input[type="text"]:focus,
+    input[type="password"]:focus {
+      border-color: var(--accent);
+    }
+
+    input[type="file"] {
+      width: 100%;
+      border: 1px dashed var(--border);
+      border-radius: 10px;
+      background: #0f161d;
+      color: var(--muted);
+      padding: 9px;
+      font-size: 13px;
+    }
+
+    button {
+      border: none;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      background: linear-gradient(180deg, var(--accent), var(--accent-dark));
+      color: #f7eee8;
+    }
+
+    .btn-muted {
+      background: #33475c;
+      color: #d9e2ec;
+    }
+
+    .btn-danger {
+      background: var(--danger);
+      color: #fff;
+    }
+
+    .toolbar {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+
+    .status {
+      min-height: 20px;
+      margin-top: 10px;
+      color: #f4d6a9;
+      font-size: 13px;
+    }
+
+    .status.ok { color: #8fdab0; }
+
+    .section {
+      margin-top: 20px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+    }
+
+    .note {
+      margin: 8px 0 0;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .images-grid {
+      margin-top: 14px;
+      display: grid;
+      gap: 12px;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    }
+
+    .image-item {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: rgba(12, 18, 24, 0.75);
+      padding: 10px;
+      display: grid;
+      gap: 8px;
+    }
+
+    .image-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .image-label {
+      font-weight: 600;
+      line-height: 1.2;
+    }
+
+    .image-key {
+      color: var(--muted);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .preview {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: #0e141a;
+    }
+
+    .actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .selector-form,
+    .selector-item {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: rgba(12, 18, 24, 0.75);
+      padding: 10px;
+    }
+
+    .selector-form { margin-top: 14px; display: grid; gap: 10px; }
+    .selector-list { margin-top: 10px; display: grid; gap: 10px; }
+
+    .selector-item p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+      word-break: break-word;
+    }
+
+    @media (max-width: 760px) {
+      body { padding: 12px; }
+      .card { padding: 16px; }
+      .grid-2 { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div id="loginCard" class="card">
+      <p class="kicker">Heritage Bridge Advisory</p>
+      <h1>Admin Access</h1>
+      <p class="sub">Private dashboard for image management.</p>
+      <div class="grid-2">
+        <div>
+          <label for="username">Username</label>
+          <input id="username" autocomplete="username" />
+        </div>
+        <div>
+          <label for="password">Password</label>
+          <input id="password" type="password" autocomplete="current-password" />
+        </div>
+      </div>
+      <div class="toolbar">
+        <button id="loginBtn" class="btn-primary">Sign In</button>
+      </div>
+      <div id="loginStatus" class="status"></div>
+    </div>
+
+    <div id="adminCard" class="card hidden">
+      <p class="kicker">Heritage Bridge Advisory</p>
+      <h1>Image Dashboard</h1>
+      <p class="sub">Upload images from device. URL entry has been removed.</p>
+
+      <div class="toolbar">
+        <button id="openSiteBtn" class="btn-muted">Open Homepage</button>
+        <button id="clearAllBtn" class="btn-danger">Reset All Changes</button>
+        <button id="logoutBtn" class="btn-muted">Sign Out</button>
+      </div>
+
+      <div id="adminStatus" class="status"></div>
+
+      <div class="section">
+        <h2>Named Site Images</h2>
+        <p class="note">Upload for any listed site image slot.</p>
+        <div id="imagesList" class="images-grid"></div>
+      </div>
+
+      <div class="section">
+        <h2>Custom Selector Overrides</h2>
+        <p class="note">For images not listed above, target by CSS selector and upload an image file.</p>
+
+        <div class="selector-form">
+          <div>
+            <label for="selectorInput">CSS Selector</label>
+            <input id="selectorInput" type="text" placeholder="Example: .footer-brand .nav-logo img" />
+          </div>
+          <div>
+            <label for="selectorAltInput">Optional Alt Text</label>
+            <input id="selectorAltInput" type="text" placeholder="Accessible image description" />
+          </div>
+          <div>
+            <label for="selectorFileInput">Image File</label>
+            <input id="selectorFileInput" type="file" accept="image/*" />
+          </div>
+          <div class="toolbar" style="margin-top: 0;">
+            <button id="addSelectorBtn" class="btn-primary">Upload Selector Image</button>
+          </div>
+        </div>
+
+        <div id="selectorsList" class="selector-list"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const USERNAME = 'heritagebridge';
+    const PASSWORD = 'HeritageBridge@123';
+    const AUTH_KEY = 'hb:admin-auth:v1';
+    const IMAGE_OVERRIDE_STORAGE_KEY = 'hb:image-overrides:v1';
+    const IMAGE_SELECTOR_OVERRIDE_STORAGE_KEY = 'hb:image-selector-overrides:v1';
+
+    const editableImages = [
+      { key: 'hero-slide-1', label: 'Hero Slide 1', defaultSrc: 'https://picsum.photos/seed/eastafrica-invest-1/1600/900' },
+      { key: 'hero-slide-2', label: 'Hero Slide 2', defaultSrc: 'https://picsum.photos/seed/eastafrica-invest-2/1600/900' },
+      { key: 'hero-slide-3', label: 'Hero Slide 3', defaultSrc: 'https://picsum.photos/seed/eastafrica-invest-3/1600/900' },
+      { key: 'about-main', label: 'About Main Image', defaultSrc: 'https://picsum.photos/seed/aboutmeeting/800/520' },
+      { key: 'service-real-estate', label: 'Service Real Estate', defaultSrc: 'https://picsum.photos/seed/realestate/700/300' },
+      { key: 'service-business-setup', label: 'Service Business Setup', defaultSrc: 'https://picsum.photos/seed/businesssetup/700/300' },
+      { key: 'service-portfolio', label: 'Service Portfolio', defaultSrc: 'https://picsum.photos/seed/portfolio/700/300' },
+      { key: 'team-member-1', label: 'Team Member 1', defaultSrc: 'https://picsum.photos/seed/person1/600/420' },
+      { key: 'team-member-2', label: 'Team Member 2', defaultSrc: 'https://picsum.photos/seed/person2/600/420' },
+      { key: 'team-member-3', label: 'Team Member 3', defaultSrc: 'https://picsum.photos/seed/person3/600/420' },
+      { key: 'team-member-4', label: 'Team Member 4', defaultSrc: 'https://picsum.photos/seed/person4/600/420' }
+    ];
+
+    function readJsonStorage(key, fallbackValue) {
+      try {
+        const rawValue = localStorage.getItem(key);
+        return rawValue ? JSON.parse(rawValue) : fallbackValue;
+      } catch (error) {
+        return fallbackValue;
+      }
+    }
+
+    function writeJsonStorage(key, value) {
+      localStorage.setItem(key, JSON.stringify(value));
+    }
+
+    function readFileAsDataUrl(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(String(reader.result || ''));
+        reader.onerror = () => reject(new Error('Failed to read file.'));
+        reader.readAsDataURL(file);
+      });
+    }
+
+    function isAuthed() {
+      return localStorage.getItem(AUTH_KEY) === 'true';
+    }
+
+    function setStatus(id, text, isOk) {
+      const el = document.getElementById(id);
+      el.textContent = text;
+      el.classList.toggle('ok', Boolean(isOk));
+    }
+
+    function renderNamedImages() {
+      const list = document.getElementById('imagesList');
+      const overrides = readJsonStorage(IMAGE_OVERRIDE_STORAGE_KEY, {});
+      list.innerHTML = '';
+
+      editableImages.forEach((item) => {
+        const rawConfig = overrides[item.key];
+        const currentSrc = (
+          typeof rawConfig === 'string'
+            ? rawConfig
+            : (rawConfig && typeof rawConfig.src === 'string' ? rawConfig.src : item.defaultSrc)
+        ).trim();
+
+        const container = document.createElement('div');
+        container.className = 'image-item';
+
+        const head = document.createElement('div');
+        head.className = 'image-head';
+        head.innerHTML = '<span class="image-label">' + item.label + '</span><span class="image-key">' + item.key + '</span>';
+
+        const preview = document.createElement('img');
+        preview.className = 'preview';
+        preview.src = currentSrc;
+        preview.alt = item.label;
+
+        const fileInput = document.createElement('input');
+        fileInput.type = 'file';
+        fileInput.accept = 'image/*';
+
+        const actions = document.createElement('div');
+        actions.className = 'actions';
+
+        const uploadBtn = document.createElement('button');
+        uploadBtn.className = 'btn-primary';
+        uploadBtn.textContent = 'Upload';
+        uploadBtn.addEventListener('click', async () => {
+          const file = fileInput.files && fileInput.files[0];
+          if (!file) {
+            setStatus('adminStatus', 'Choose a file before uploading ' + item.label + '.', false);
+            return;
+          }
+
+          try {
+            const dataUrl = await readFileAsDataUrl(file);
+            const latest = readJsonStorage(IMAGE_OVERRIDE_STORAGE_KEY, {});
+            latest[item.key] = { src: dataUrl, hidden: false };
+            writeJsonStorage(IMAGE_OVERRIDE_STORAGE_KEY, latest);
+            setStatus('adminStatus', item.label + ' uploaded.', true);
+            renderNamedImages();
+          } catch (error) {
+            setStatus('adminStatus', 'Upload failed for ' + item.label + '.', false);
+          }
+        });
+
+        const removeBtn = document.createElement('button');
+        removeBtn.className = 'btn-danger';
+        removeBtn.textContent = 'Remove';
+        removeBtn.addEventListener('click', () => {
+          const latest = readJsonStorage(IMAGE_OVERRIDE_STORAGE_KEY, {});
+          delete latest[item.key];
+          writeJsonStorage(IMAGE_OVERRIDE_STORAGE_KEY, latest);
+          setStatus('adminStatus', item.label + ' override removed.', true);
+          renderNamedImages();
+        });
+
+        actions.appendChild(uploadBtn);
+        actions.appendChild(removeBtn);
+
+        container.appendChild(head);
+        container.appendChild(preview);
+        container.appendChild(fileInput);
+        container.appendChild(actions);
+        list.appendChild(container);
+      });
+    }
+
+    function renderSelectorOverrides() {
+      const list = document.getElementById('selectorsList');
+      const overrides = readJsonStorage(IMAGE_SELECTOR_OVERRIDE_STORAGE_KEY, []);
+      list.innerHTML = '';
+
+      if (!overrides.length) {
+        const empty = document.createElement('div');
+        empty.className = 'selector-item';
+        empty.innerHTML = '<p>No custom selector overrides yet.</p>';
+        list.appendChild(empty);
+        return;
+      }
+
+      overrides.forEach((entry, index) => {
+        const box = document.createElement('div');
+        box.className = 'selector-item';
+
+        const details = document.createElement('p');
+        details.textContent = 'Selector: ' + entry.selector;
+
+        const preview = document.createElement('img');
+        preview.className = 'preview';
+        preview.src = entry.src;
+        preview.alt = entry.alt || 'Custom selector image';
+
+        const actions = document.createElement('div');
+        actions.className = 'actions';
+
+        const editBtn = document.createElement('button');
+        editBtn.className = 'btn-muted';
+        editBtn.textContent = 'Edit';
+        editBtn.addEventListener('click', () => {
+          document.getElementById('selectorInput').value = entry.selector || '';
+          document.getElementById('selectorAltInput').value = entry.alt || '';
+
+          const fresh = readJsonStorage(IMAGE_SELECTOR_OVERRIDE_STORAGE_KEY, []);
+          fresh.splice(index, 1);
+          writeJsonStorage(IMAGE_SELECTOR_OVERRIDE_STORAGE_KEY, fresh);
+          renderSelectorOverrides();
+          setStatus('adminStatus', 'Loaded selector for update. Upload a new image now.', true);
+        });
+
+        const removeBtn = document.createElement('button');
+        removeBtn.className = 'btn-danger';
+        removeBtn.textContent = 'Remove';
+        removeBtn.addEventListener('click', () => {
+          const fresh = readJsonStorage(IMAGE_SELECTOR_OVERRIDE_STORAGE_KEY, []);
+          fresh.splice(index, 1);
+          writeJsonStorage(IMAGE_SELECTOR_OVERRIDE_STORAGE_KEY, fresh);
+          renderSelectorOverrides();
+          setStatus('adminStatus', 'Custom selector override removed.', true);
+        });
+
+        actions.appendChild(editBtn);
+        actions.appendChild(removeBtn);
+
+        box.appendChild(details);
+        box.appendChild(preview);
+        box.appendChild(actions);
+        list.appendChild(box);
+      });
+    }
+
+    function showAdmin() {
+      document.getElementById('loginCard').classList.add('hidden');
+      document.getElementById('adminCard').classList.remove('hidden');
+      renderNamedImages();
+      renderSelectorOverrides();
+    }
+
+    function showLogin() {
+      document.getElementById('adminCard').classList.add('hidden');
+      document.getElementById('loginCard').classList.remove('hidden');
+      document.getElementById('password').value = '';
+      setStatus('loginStatus', '', false);
+    }
+
+    document.getElementById('loginBtn').addEventListener('click', () => {
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value;
+
+      if (username === USERNAME && password === PASSWORD) {
+        localStorage.setItem(AUTH_KEY, 'true');
+        showAdmin();
+        setStatus('adminStatus', 'Signed in successfully.', true);
+      } else {
+        setStatus('loginStatus', 'Invalid username or password.', false);
+      }
+    });
+
+    document.getElementById('password').addEventListener('keydown', (event) => {
+      if (event.key === 'Enter') {
+        document.getElementById('loginBtn').click();
+      }
+    });
+
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+      localStorage.removeItem(AUTH_KEY);
+      showLogin();
+    });
+
+    document.getElementById('clearAllBtn').addEventListener('click', () => {
+      localStorage.removeItem(IMAGE_OVERRIDE_STORAGE_KEY);
+      localStorage.removeItem(IMAGE_SELECTOR_OVERRIDE_STORAGE_KEY);
+      renderNamedImages();
+      renderSelectorOverrides();
+      setStatus('adminStatus', 'All image overrides were reset.', true);
+    });
+
+    document.getElementById('openSiteBtn').addEventListener('click', () => {
+      window.open('/', '_blank');
+    });
+
+    document.getElementById('addSelectorBtn').addEventListener('click', async () => {
+      const selector = document.getElementById('selectorInput').value.trim();
+      const alt = document.getElementById('selectorAltInput').value.trim();
+      const fileInput = document.getElementById('selectorFileInput');
+      const file = fileInput.files && fileInput.files[0];
+
+      if (!selector) {
+        setStatus('adminStatus', 'Selector is required.', false);
+        return;
+      }
+
+      if (!file) {
+        setStatus('adminStatus', 'Please choose an image file.', false);
+        return;
+      }
+
+      try {
+        document.querySelectorAll(selector);
+      } catch (error) {
+        setStatus('adminStatus', 'Invalid CSS selector.', false);
+        return;
+      }
+
+      try {
+        const dataUrl = await readFileAsDataUrl(file);
+        const list = readJsonStorage(IMAGE_SELECTOR_OVERRIDE_STORAGE_KEY, []);
+        list.push({ selector, src: dataUrl, alt, hidden: false });
+        writeJsonStorage(IMAGE_SELECTOR_OVERRIDE_STORAGE_KEY, list);
+
+        document.getElementById('selectorInput').value = '';
+        document.getElementById('selectorAltInput').value = '';
+        fileInput.value = '';
+
+        renderSelectorOverrides();
+        setStatus('adminStatus', 'Custom selector image uploaded.', true);
+      } catch (error) {
+        setStatus('adminStatus', 'Failed to upload selector image.', false);
+      }
+    });
+
+    if (isAuthed()) {
+      showAdmin();
+    } else {
+      showLogin();
+    }
+  </script>
+</body>
+</html>

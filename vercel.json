@@ -3,19 +3,23 @@
   "rewrites": [
     {
       "source": "/admin",
-      "destination": "/aadmin/index.html"
+      "destination": "/admin.html"
     },
     {
       "source": "/admin/",
-      "destination": "/aadmin/index.html"
+      "destination": "/admin.html"
     },
     {
       "source": "/aadmin",
-      "destination": "/aadmin/index.html"
+      "destination": "/admin.html"
     },
     {
       "source": "/aadmin/",
-      "destination": "/aadmin/index.html"
+      "destination": "/admin.html"
+    },
+    {
+      "source": "/aadmin/index.html",
+      "destination": "/admin.html"
     }
   ]
 }
