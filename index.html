@@ -187,6 +187,7 @@
       width: auto;
       background: var(--cream);
       padding: 0;
+      height: 100%;
     }
 
     .hero-gallery-wrapper {
@@ -195,19 +196,19 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: space-between;
+      justify-content: flex-start;
       height: 100%;
       min-height: 420px;
-      padding: 18px 22px;
+      padding: 0 16px 8px;
       position: relative;
     }
 
     .hero-slideshow-container {
       position: relative;
       width: 100%;
-      min-height: 320px;
-      height: 100%;
-      flex: 1;
+      min-height: 0;
+      height: calc(100% - 84px);
+      flex: 0 0 auto;
       overflow: hidden;
       display: flex;
       align-items: center;
@@ -279,7 +280,10 @@
       transition: all 0.3s ease;
     }
 
-    #hero-gallery .hero-location-badge { margin-top: 18px; }
+    #hero-gallery .hero-location-badge {
+      margin-top: auto;
+      margin-bottom: 0;
+    }
 
     .hero-location-badge strong {
       display: block;
@@ -298,7 +302,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      min-height: 320px;
+      min-height: 0;
       height: 100%;
     }
 
@@ -971,6 +975,8 @@
     @media (max-width: 900px) {
       #hero { grid-template-columns: 1fr; }
       #hero-gallery { padding: 0; }
+      .hero-gallery-wrapper { min-height: 380px; padding: 0 10px 8px; }
+      .hero-slideshow-container { height: calc(100% - 78px); }
       .hero-right { height: 380px; }
       .hero-left { padding: 60px 6%; }
       .about-grid, .values-grid, .contact-grid { grid-template-columns: 1fr; gap: 32px; }
