@@ -112,14 +112,14 @@
     #hero {
       min-height: 420px;
       background: var(--charcoal);
-      display: grid;
-      grid-template-columns: 1fr 1fr;
+      display: flex;
       align-items: stretch;
       padding-top: 0;
       overflow: hidden;
     }
 
     .hero-left {
+      flex: 1 1 50%;
       background: var(--burgundy-dark);
       padding: 60px 8% 40px 8%;
       min-height: 420px;
@@ -184,10 +184,12 @@
 
     /* HERO GALLERY SECTION */
     #hero-gallery {
+      flex: 1 1 50%;
       width: auto;
       background: var(--cream);
       padding: 0;
-      height: 100%;
+      display: flex;
+      align-items: stretch;
     }
 
     .hero-gallery-wrapper {
@@ -197,8 +199,8 @@
       flex-direction: column;
       align-items: center;
       justify-content: flex-start;
-      height: 420px;
-      min-height: 420px;
+      height: 100%;
+      min-height: 100%;
       padding: 0;
       position: relative;
     }
@@ -207,8 +209,8 @@
       position: relative;
       width: 100%;
       min-height: 0;
-      height: calc(100% - 74px);
-      flex: 0 0 auto;
+      height: auto;
+      flex: 1 1 auto;
       overflow: hidden;
       display: flex;
       align-items: center;
@@ -278,14 +280,6 @@
       letter-spacing: 0.06em;
       text-transform: uppercase;
       transition: all 0.3s ease;
-    }
-
-    #hero-gallery .hero-location-badge {
-      position: absolute;
-      left: 50%;
-      bottom: 10px;
-      transform: translateX(-50%);
-      margin: 0;
     }
 
     .hero-location-badge strong {
@@ -436,6 +430,16 @@
 
     .about-image-wrap {
       position: relative;
+    }
+
+    .about-image-wrap .hero-location-badge {
+      position: absolute;
+      top: -34px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 6;
+      margin: 0;
+      white-space: nowrap;
     }
 
     .about-image-wrap img {
@@ -976,13 +980,13 @@
 
     /* RESPONSIVE */
     @media (max-width: 900px) {
-      #hero { grid-template-columns: 1fr; }
+      #hero { flex-direction: column; }
       #hero-gallery { padding: 0; }
       .hero-gallery-wrapper { height: 380px; min-height: 380px; padding: 0; }
-      .hero-slideshow-container { height: calc(100% - 70px); }
-      #hero-gallery .hero-location-badge { bottom: 8px; }
+      .hero-slideshow-container { height: auto; }
       .hero-right { height: 380px; }
       .hero-left { padding: 60px 6%; }
+      .about-image-wrap .hero-location-badge { top: -28px; }
       .about-grid, .values-grid, .contact-grid { grid-template-columns: 1fr; gap: 32px; }
       .about-image-wrap { order: -1; }
       .team-slide { grid-template-columns: 1fr; gap: 24px; }
@@ -1078,10 +1082,6 @@
           <button class="hero-slide-dot" aria-label="Slide 3"></button>
         </div>
       </div>
-      <div class="hero-location-badge">
-        <strong>East Africa</strong>
-        Kenya &middot; Tanzania &middot; Uganda &middot; Rwanda
-      </div>
     </div>
   </section>
   </section>
@@ -1095,6 +1095,10 @@
           <h2 class="fade-up fade-up-delay-1">We champion your cause and amplify your impact.</h2>
         </div>
         <div class="about-image-wrap fade-up fade-up-delay-2">
+          <div class="hero-location-badge">
+            <strong>East Africa</strong>
+            Kenya &middot; Tanzania &middot; Uganda &middot; Rwanda
+          </div>
           <img src="https://picsum.photos/seed/aboutmeeting/800/520" alt="Business meeting" />
           <div class="about-image-accent"></div>
         </div>
