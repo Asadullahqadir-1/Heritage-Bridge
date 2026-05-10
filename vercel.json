@@ -8,6 +8,10 @@
   ],
   "routes": [
     {
+      "src": "/aadmin/?",
+      "dest": "/aadmin/index.html"
+    },
+    {
       "src": "/(.*)",
       "dest": "/$1"
     }

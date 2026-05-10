@@ -940,6 +940,17 @@
       max-width: 280px;
     }
 
+    .footer-brand .nav-logo {
+      background: transparent;
+      padding: 0;
+      border-radius: 0;
+    }
+
+    .footer-brand .nav-logo img {
+      display: block;
+      max-width: 100%;
+    }
+
     .footer-col h4 {
       font-size: 11.5px;
       font-weight: 700;
@@ -1066,17 +1077,17 @@
       <div class="hero-slideshow-container">
         <div class="hero-slide active">
           <div class="hero-right">
-            <img src="https://picsum.photos/seed/eastafrica-invest-1/1600/900" alt="East Africa investment landscape" />
+            <img data-image-key="hero-slide-1" src="https://picsum.photos/seed/eastafrica-invest-1/1600/900" alt="East Africa investment landscape" />
           </div>
         </div>
         <div class="hero-slide">
           <div class="hero-right">
-            <img src="https://picsum.photos/seed/eastafrica-invest-2/1600/900" alt="Diaspora advisory consultation" />
+            <img data-image-key="hero-slide-2" src="https://picsum.photos/seed/eastafrica-invest-2/1600/900" alt="Diaspora advisory consultation" />
           </div>
         </div>
         <div class="hero-slide">
           <div class="hero-right">
-            <img src="https://picsum.photos/seed/eastafrica-invest-3/1600/900" alt="Business growth opportunities in East Africa" />
+            <img data-image-key="hero-slide-3" src="https://picsum.photos/seed/eastafrica-invest-3/1600/900" alt="Business growth opportunities in East Africa" />
           </div>
         </div>
         <div class="hero-slide-dots">
@@ -1102,7 +1113,7 @@
             <strong>East Africa</strong>
             Kenya &middot; Tanzania &middot; Uganda &middot; Rwanda
           </div>
-          <img src="https://picsum.photos/seed/aboutmeeting/800/520" alt="Business meeting" />
+          <img data-image-key="about-main" src="https://picsum.photos/seed/aboutmeeting/800/520" alt="Business meeting" />
           <div class="about-image-accent"></div>
         </div>
       </div>
@@ -1138,7 +1149,7 @@
       </div>
       <div class="services-grid">
         <div class="service-card fade-up">
-          <img class="service-card-img" src="https://picsum.photos/seed/realestate/700/300" alt="Real Estate" />
+          <img class="service-card-img" data-image-key="service-real-estate" src="https://picsum.photos/seed/realestate/700/300" alt="Real Estate" />
           <div class="service-card-body">
             <div class="service-card-index">01</div>
             <h3 class="service-card-title">Real Estate &amp; Land Advisory</h3>
@@ -1147,7 +1158,7 @@
           </div>
         </div>
         <div class="service-card fade-up fade-up-delay-1">
-          <img class="service-card-img" src="https://picsum.photos/seed/businesssetup/700/300" alt="Business Setup" />
+          <img class="service-card-img" data-image-key="service-business-setup" src="https://picsum.photos/seed/businesssetup/700/300" alt="Business Setup" />
           <div class="service-card-body">
             <div class="service-card-index">02</div>
             <h3 class="service-card-title">Business Setup &amp; Registration</h3>
@@ -1156,7 +1167,7 @@
           </div>
         </div>
         <div class="service-card fade-up fade-up-delay-2">
-          <img class="service-card-img" src="https://picsum.photos/seed/portfolio/700/300" alt="Portfolio Management" />
+          <img class="service-card-img" data-image-key="service-portfolio" src="https://picsum.photos/seed/portfolio/700/300" alt="Portfolio Management" />
           <div class="service-card-body">
             <div class="service-card-index">03</div>
             <h3 class="service-card-title">Investment Portfolio Management</h3>
@@ -1178,7 +1189,7 @@
       <div class="team-carousel-wrap">
         <div class="team-carousel" id="teamCarousel">
           <div class="team-slide">
-            <img src="https://picsum.photos/seed/person1/600/420" alt="Dr. Sarah Kamau" />
+            <img data-image-key="team-member-1" src="https://picsum.photos/seed/person1/600/420" alt="Dr. Sarah Kamau" />
             <div class="team-slide-body">
               <h3>Dr. Sarah Kamau</h3>
               <span class="team-role">CEO &amp; Co-Founder</span>
@@ -1186,7 +1197,7 @@
             </div>
           </div>
           <div class="team-slide">
-            <img src="https://picsum.photos/seed/person2/600/420" alt="James Omondi" />
+            <img data-image-key="team-member-2" src="https://picsum.photos/seed/person2/600/420" alt="James Omondi" />
             <div class="team-slide-body">
               <h3>James Omondi</h3>
               <span class="team-role">Director of Real Estate</span>
@@ -1194,7 +1205,7 @@
             </div>
           </div>
           <div class="team-slide">
-            <img src="https://picsum.photos/seed/person3/600/420" alt="Grace Uwimana" />
+            <img data-image-key="team-member-3" src="https://picsum.photos/seed/person3/600/420" alt="Grace Uwimana" />
             <div class="team-slide-body">
               <h3>Grace Uwimana</h3>
               <span class="team-role">Rwanda Country Director</span>
@@ -1202,7 +1213,7 @@
             </div>
           </div>
           <div class="team-slide">
-            <img src="https://picsum.photos/seed/person4/600/420" alt="Michael Adeyemi" />
+            <img data-image-key="team-member-4" src="https://picsum.photos/seed/person4/600/420" alt="Michael Adeyemi" />
             <div class="team-slide-body">
               <h3>Michael Adeyemi</h3>
               <span class="team-role">US Diaspora Relations Lead</span>
@@ -1356,6 +1367,50 @@
   </footer>
 
   <script>
+    const IMAGE_OVERRIDE_STORAGE_KEY = 'hb:image-overrides:v1';
+    const IMAGE_SELECTOR_OVERRIDE_STORAGE_KEY = 'hb:image-selector-overrides:v1';
+
+    function readJsonStorage(key, fallbackValue) {
+      try {
+        const rawValue = localStorage.getItem(key);
+        return rawValue ? JSON.parse(rawValue) : fallbackValue;
+      } catch (error) {
+        return fallbackValue;
+      }
+    }
+
+    function applyImageOverrides() {
+      const keyOverrides = readJsonStorage(IMAGE_OVERRIDE_STORAGE_KEY, {});
+      Object.entries(keyOverrides).forEach(([key, src]) => {
+        if (typeof src !== 'string' || !src.trim()) return;
+        const safeKey = key.replace(/"/g, '\\"');
+        document.querySelectorAll(`[data-image-key="${safeKey}"]`).forEach((img) => {
+          img.src = src.trim();
+        });
+      });
+
+      const selectorOverrides = readJsonStorage(IMAGE_SELECTOR_OVERRIDE_STORAGE_KEY, []);
+      if (!Array.isArray(selectorOverrides)) return;
+
+      selectorOverrides.forEach((item) => {
+        if (!item || typeof item.selector !== 'string' || typeof item.src !== 'string') return;
+        if (!item.selector.trim() || !item.src.trim()) return;
+
+        try {
+          document.querySelectorAll(item.selector).forEach((img) => {
+            if (img.tagName === 'IMG') {
+              img.src = item.src.trim();
+              if (typeof item.alt === 'string' && item.alt.trim()) img.alt = item.alt.trim();
+            }
+          });
+        } catch (error) {
+          // Ignore invalid selectors to keep the page functional.
+        }
+      });
+    }
+
+    applyImageOverrides();
+
     const observer = new IntersectionObserver(
       (entries) => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }),
       { threshold: 0.12 }
