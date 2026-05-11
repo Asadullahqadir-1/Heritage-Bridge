@@ -4,6 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Heritage Bridge Advisory - Diaspora Investment in East Africa</title>
+  <link rel="icon" type="image/jpeg" href="./updated-logo.jpeg?v=20260511" />
+  <link rel="shortcut icon" href="./updated-logo.jpeg?v=20260511" />
+  <link rel="apple-touch-icon" href="./updated-logo.jpeg?v=20260511" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
@@ -941,14 +944,19 @@
     }
 
     .footer-brand .nav-logo {
-      background: transparent;
-      padding: 0;
-      border-radius: 0;
+      display: inline-flex;
+      width: auto;
+      background: var(--white);
+      padding: 8px 12px;
+      border-radius: 6px;
     }
 
     .footer-brand .nav-logo img {
       display: block;
+      height: 52px;
+      width: auto;
       max-width: 100%;
+      object-fit: contain;
     }
 
     .footer-col h4 {
@@ -1369,6 +1377,16 @@
   <script>
     const IMAGE_OVERRIDE_STORAGE_KEY = 'hb:image-overrides:v1';
     const IMAGE_SELECTOR_OVERRIDE_STORAGE_KEY = 'hb:image-selector-overrides:v1';
+    const BRAND_LOGO_SRC = './updated-logo.jpeg?v=20260511';
+
+    function ensureBrandLogoVisibility() {
+      document.querySelectorAll('.nav-logo img, .nav-logo-mark').forEach((img) => {
+        const current = (img.getAttribute('src') || '').trim();
+        if (!current || current.startsWith('data:image/')) {
+          img.src = BRAND_LOGO_SRC;
+        }
+      });
+    }
 
     function readJsonStorage(key, fallbackValue) {
       try {
@@ -1381,11 +1399,21 @@
 
     function applyImageOverrides() {
       const keyOverrides = readJsonStorage(IMAGE_OVERRIDE_STORAGE_KEY, {});
-      Object.entries(keyOverrides).forEach(([key, src]) => {
-        if (typeof src !== 'string' || !src.trim()) return;
+      Object.entries(keyOverrides).forEach(([key, value]) => {
+        let src = '';
+        let hidden = false;
+
+        if (typeof value === 'string') {
+          src = value.trim();
+        } else if (value && typeof value === 'object') {
+          if (typeof value.src === 'string') src = value.src.trim();
+          hidden = Boolean(value.hidden);
+        }
+
         const safeKey = key.replace(/"/g, '\\"');
         document.querySelectorAll(`[data-image-key="${safeKey}"]`).forEach((img) => {
-          img.src = src.trim();
+          if (src) img.src = src;
+          img.style.display = hidden ? 'none' : '';
         });
       });
 
@@ -1393,13 +1421,18 @@
       if (!Array.isArray(selectorOverrides)) return;
 
       selectorOverrides.forEach((item) => {
-        if (!item || typeof item.selector !== 'string' || typeof item.src !== 'string') return;
-        if (!item.selector.trim() || !item.src.trim()) return;
+        if (!item || typeof item.selector !== 'string') return;
+        const selector = item.selector.trim();
+        const src = typeof item.src === 'string' ? item.src.trim() : '';
+        const hidden = Boolean(item.hidden);
+        if (!selector) return;
+        if (!hidden && !src) return;
 
         try {
-          document.querySelectorAll(item.selector).forEach((img) => {
+          document.querySelectorAll(selector).forEach((img) => {
             if (img.tagName === 'IMG') {
-              img.src = item.src.trim();
+              if (!hidden && src) img.src = src;
+              img.style.display = hidden ? 'none' : '';
               if (typeof item.alt === 'string' && item.alt.trim()) img.alt = item.alt.trim();
             }
           });
@@ -1409,6 +1442,7 @@
       });
     }
 
+    ensureBrandLogoVisibility();
     applyImageOverrides();
 
     const observer = new IntersectionObserver(
