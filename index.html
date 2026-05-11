@@ -945,16 +945,22 @@
       border-bottom: 1px solid rgba(26,26,26,0.08);
     }
 
+    .footer-brand {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
     .footer-brand p {
       font-size: 14px;
       line-height: 1.75;
       color: var(--stone);
-      margin-top: 16px;
+      margin-top: 0;
       max-width: 280px;
     }
 
     .footer-brand .nav-logo {
-      display: inline-flex;
+      display: flex;
       width: 320px;
       height: 92px;
       background: var(--white);
@@ -962,6 +968,7 @@
       border-radius: 6px;
       justify-content: center;
       overflow: hidden;
+      margin-bottom: 8px;
     }
 
     .footer-brand .nav-logo img {
