@@ -58,12 +58,22 @@
       border-radius: 4px;
     }
 
+    nav .nav-logo {
+      width: 174px;
+      height: 56px;
+      justify-content: center;
+      overflow: hidden;
+      padding: 4px;
+    }
+
     .nav-logo-mark {
-      height: 44px;
-      width: auto;
+      height: 210px;
+      width: 210px;
+      max-width: none;
       display: block;
       object-fit: contain;
-      border-radius: 4px;
+      transform: scale(2.1);
+      transform-origin: center center;
     }
 
     .nav-links {
@@ -945,18 +955,23 @@
 
     .footer-brand .nav-logo {
       display: inline-flex;
-      width: auto;
+      width: 208px;
+      height: 70px;
       background: var(--white);
-      padding: 8px 12px;
+      padding: 4px;
       border-radius: 6px;
+      justify-content: center;
+      overflow: hidden;
     }
 
     .footer-brand .nav-logo img {
       display: block;
-      height: 52px;
-      width: auto;
-      max-width: 100%;
+      height: 230px !important;
+      width: 230px !important;
+      max-width: none;
       object-fit: contain;
+      transform: scale(2.05);
+      transform-origin: center center;
     }
 
     .footer-col h4 {
@@ -1388,6 +1403,38 @@
       });
     }
 
+    function improveFaviconVisibility() {
+      const iconLinks = Array.from(document.querySelectorAll('link[rel="icon"], link[rel="shortcut icon"], link[rel="apple-touch-icon"]'));
+      if (!iconLinks.length) return;
+
+      const sourceImage = new Image();
+      sourceImage.onload = () => {
+        const canvas = document.createElement('canvas');
+        canvas.width = 256;
+        canvas.height = 256;
+        const context = canvas.getContext('2d');
+        if (!context) return;
+
+        const sx = sourceImage.width * 0.24;
+        const sy = sourceImage.height * 0.24;
+        const sw = sourceImage.width * 0.52;
+        const sh = sourceImage.height * 0.52;
+
+        context.fillStyle = '#ffffff';
+        context.fillRect(0, 0, 256, 256);
+        context.drawImage(sourceImage, sx, sy, sw, sh, 16, 16, 224, 224);
+
+        const optimizedIcon = canvas.toDataURL('image/png');
+        iconLinks.forEach((linkEl) => {
+          linkEl.href = optimizedIcon;
+          if (linkEl.getAttribute('rel') === 'icon') {
+            linkEl.type = 'image/png';
+          }
+        });
+      };
+      sourceImage.src = BRAND_LOGO_SRC;
+    }
+
     function readJsonStorage(key, fallbackValue) {
       try {
         const rawValue = localStorage.getItem(key);
@@ -1443,6 +1490,7 @@
     }
 
     ensureBrandLogoVisibility();
+    improveFaviconVisibility();
     applyImageOverrides();
 
     const observer = new IntersectionObserver(
