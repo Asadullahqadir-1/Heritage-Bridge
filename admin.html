@@ -343,6 +343,25 @@
     </div>
   </div>
 
+  <h1>Admin Panel</h1>
+  <div>
+    <h2>Custom Text Overrides</h2>
+    <form id="text-override-form">
+      <label for="css-selector">CSS Selector</label>
+      <input type="text" id="css-selector" placeholder="Example: nav.about">
+
+      <label for="replacement-text">Replacement Text</label>
+      <textarea id="replacement-text" placeholder="Enter the new text to show on the site"></textarea>
+
+      <button type="button" id="save-text-override">Save Text Override</button>
+    </form>
+  </div>
+
+  <div>
+    <h2>Current Content</h2>
+    <pre id="content-display">Loading...</pre>
+  </div>
+
   <script>
     const USERNAME = 'heritagebridge';
     const PASSWORD = 'HeritageBridge@123';
