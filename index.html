@@ -1635,6 +1635,22 @@
     }
   </script>
 
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      fetch('content.json')
+        .then(response => response.json())
+        .then(data => {
+          document.getElementById('nav-about').textContent = data.nav.about;
+          document.getElementById('nav-gallery').textContent = data.nav.gallery;
+          document.getElementById('nav-contact').textContent = data.nav.contact;
+          document.getElementById('section-welcome').textContent = data.sections.welcome;
+          document.getElementById('section-about').textContent = data.sections.about;
+          document.getElementById('section-gallery').textContent = data.sections.gallery;
+          document.getElementById('section-contact').textContent = data.sections.contact;
+        });
+    });
+  </script>
+
 </body>
 </html>
 

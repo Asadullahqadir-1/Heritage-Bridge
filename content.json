@@ -1,0 +1,13 @@
+{
+  "nav": {
+    "about": "About Us",
+    "gallery": "Gallery",
+    "contact": "Contact Us"
+  },
+  "sections": {
+    "welcome": "Welcome to our website!",
+    "about": "We are a company dedicated to excellence.",
+    "gallery": "Check out our amazing gallery.",
+    "contact": "Feel free to reach out to us anytime."
+  }
+}
