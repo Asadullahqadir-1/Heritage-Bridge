@@ -92,7 +92,8 @@
     }
 
     input[type="text"],
-    input[type="password"] {
+    input[type="password"],
+    textarea {
       width: 100%;
       border: 1px solid var(--border);
       border-radius: 10px;
@@ -103,8 +104,15 @@
       outline: none;
     }
 
+    textarea {
+      min-height: 90px;
+      resize: vertical;
+      font-family: "Segoe UI", Tahoma, sans-serif;
+    }
+
     input[type="text"]:focus,
-    input[type="password"]:focus {
+    input[type="password"]:focus,
+    textarea:focus {
       border-color: var(--accent);
     }
 
@@ -251,7 +259,7 @@
     <div id="loginCard" class="card">
       <p class="kicker">Heritage Bridge Advisory</p>
       <h1>Admin Access</h1>
-      <p class="sub">Private dashboard for image management.</p>
+      <p class="sub">Private dashboard for image and text management.</p>
       <div class="grid-2">
         <div>
           <label for="username">Username</label>
@@ -311,6 +319,27 @@
 
         <div id="selectorsList" class="selector-list"></div>
       </div>
+
+      <div class="section">
+        <h2>Custom Text Overrides</h2>
+        <p class="note">Target any text element by CSS selector and replace its visible text.</p>
+
+        <div class="selector-form">
+          <div>
+            <label for="textSelectorInput">CSS Selector</label>
+            <input id="textSelectorInput" type="text" placeholder="Example: #about .about-text h2" />
+          </div>
+          <div>
+            <label for="textValueInput">Replacement Text</label>
+            <textarea id="textValueInput" placeholder="Enter the new text to show on the site"></textarea>
+          </div>
+          <div class="toolbar" style="margin-top: 0;">
+            <button id="addTextOverrideBtn" class="btn-primary">Save Text Override</button>
+          </div>
+        </div>
+
+        <div id="textOverridesList" class="selector-list"></div>
+      </div>
     </div>
   </div>
 
@@ -320,6 +349,7 @@
     const AUTH_KEY = 'hb:admin-auth:v1';
     const IMAGE_OVERRIDE_STORAGE_KEY = 'hb:image-overrides:v1';
     const IMAGE_SELECTOR_OVERRIDE_STORAGE_KEY = 'hb:image-selector-overrides:v1';
+    const TEXT_SELECTOR_OVERRIDE_STORAGE_KEY = 'hb:text-selector-overrides:v1';
 
     const editableImages = [
       { key: 'hero-slide-1', label: 'Hero Slide 1', defaultSrc: 'https://picsum.photos/seed/eastafrica-invest-1/1600/900' },
@@ -506,11 +536,73 @@
       });
     }
 
+    function renderTextOverrides() {
+      const list = document.getElementById('textOverridesList');
+      const overrides = readJsonStorage(TEXT_SELECTOR_OVERRIDE_STORAGE_KEY, []);
+      list.innerHTML = '';
+
+      if (!overrides.length) {
+        const empty = document.createElement('div');
+        empty.className = 'selector-item';
+        empty.innerHTML = '<p>No custom text overrides yet.</p>';
+        list.appendChild(empty);
+        return;
+      }
+
+      overrides.forEach((entry, index) => {
+        const box = document.createElement('div');
+        box.className = 'selector-item';
+
+        const selectorLine = document.createElement('p');
+        selectorLine.textContent = 'Selector: ' + entry.selector;
+
+        const textLine = document.createElement('p');
+        textLine.textContent = 'Text: ' + entry.text;
+
+        const actions = document.createElement('div');
+        actions.className = 'actions';
+
+        const editBtn = document.createElement('button');
+        editBtn.className = 'btn-muted';
+        editBtn.textContent = 'Edit';
+        editBtn.addEventListener('click', () => {
+          document.getElementById('textSelectorInput').value = entry.selector || '';
+          document.getElementById('textValueInput').value = entry.text || '';
+
+          const fresh = readJsonStorage(TEXT_SELECTOR_OVERRIDE_STORAGE_KEY, []);
+          fresh.splice(index, 1);
+          writeJsonStorage(TEXT_SELECTOR_OVERRIDE_STORAGE_KEY, fresh);
+          renderTextOverrides();
+          setStatus('adminStatus', 'Loaded text override for update.', true);
+        });
+
+        const removeBtn = document.createElement('button');
+        removeBtn.className = 'btn-danger';
+        removeBtn.textContent = 'Remove';
+        removeBtn.addEventListener('click', () => {
+          const fresh = readJsonStorage(TEXT_SELECTOR_OVERRIDE_STORAGE_KEY, []);
+          fresh.splice(index, 1);
+          writeJsonStorage(TEXT_SELECTOR_OVERRIDE_STORAGE_KEY, fresh);
+          renderTextOverrides();
+          setStatus('adminStatus', 'Custom text override removed.', true);
+        });
+
+        actions.appendChild(editBtn);
+        actions.appendChild(removeBtn);
+
+        box.appendChild(selectorLine);
+        box.appendChild(textLine);
+        box.appendChild(actions);
+        list.appendChild(box);
+      });
+    }
+
     function showAdmin() {
       document.getElementById('loginCard').classList.add('hidden');
       document.getElementById('adminCard').classList.remove('hidden');
       renderNamedImages();
       renderSelectorOverrides();
+      renderTextOverrides();
     }
 
     function showLogin() {
@@ -547,9 +639,11 @@
     document.getElementById('clearAllBtn').addEventListener('click', () => {
       localStorage.removeItem(IMAGE_OVERRIDE_STORAGE_KEY);
       localStorage.removeItem(IMAGE_SELECTOR_OVERRIDE_STORAGE_KEY);
+      localStorage.removeItem(TEXT_SELECTOR_OVERRIDE_STORAGE_KEY);
       renderNamedImages();
       renderSelectorOverrides();
-      setStatus('adminStatus', 'All image overrides were reset.', true);
+      renderTextOverrides();
+      setStatus('adminStatus', 'All image and text overrides were reset.', true);
     });
 
     document.getElementById('openSiteBtn').addEventListener('click', () => {
@@ -594,6 +688,38 @@
       } catch (error) {
         setStatus('adminStatus', 'Failed to upload selector image.', false);
       }
+    });
+
+    document.getElementById('addTextOverrideBtn').addEventListener('click', () => {
+      const selector = document.getElementById('textSelectorInput').value.trim();
+      const text = document.getElementById('textValueInput').value.trim();
+
+      if (!selector) {
+        setStatus('adminStatus', 'Text selector is required.', false);
+        return;
+      }
+
+      if (!text) {
+        setStatus('adminStatus', 'Replacement text is required.', false);
+        return;
+      }
+
+      try {
+        document.querySelectorAll(selector);
+      } catch (error) {
+        setStatus('adminStatus', 'Invalid text CSS selector.', false);
+        return;
+      }
+
+      const list = readJsonStorage(TEXT_SELECTOR_OVERRIDE_STORAGE_KEY, []);
+      list.push({ selector, text });
+      writeJsonStorage(TEXT_SELECTOR_OVERRIDE_STORAGE_KEY, list);
+
+      document.getElementById('textSelectorInput').value = '';
+      document.getElementById('textValueInput').value = '';
+
+      renderTextOverrides();
+      setStatus('adminStatus', 'Custom text override saved.', true);
     });
 
     if (isAuthed()) {

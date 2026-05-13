@@ -1402,6 +1402,7 @@
   <script>
     const IMAGE_OVERRIDE_STORAGE_KEY = 'hb:image-overrides:v1';
     const IMAGE_SELECTOR_OVERRIDE_STORAGE_KEY = 'hb:image-selector-overrides:v1';
+    const TEXT_SELECTOR_OVERRIDE_STORAGE_KEY = 'hb:text-selector-overrides:v1';
     const BRAND_LOGO_SRC = './updated logo.png?v=20260511d';
 
     function ensureBrandLogoVisibility() {
@@ -1497,9 +1498,37 @@
       });
     }
 
+    function applyTextOverrides() {
+      const textOverrides = readJsonStorage(TEXT_SELECTOR_OVERRIDE_STORAGE_KEY, []);
+      if (!Array.isArray(textOverrides)) return;
+
+      textOverrides.forEach((item) => {
+        if (!item || typeof item.selector !== 'string' || typeof item.text !== 'string') return;
+        const selector = item.selector.trim();
+        const text = item.text;
+        if (!selector) return;
+
+        try {
+          document.querySelectorAll(selector).forEach((element) => {
+            const tag = element.tagName;
+            if (tag === 'SCRIPT' || tag === 'STYLE') return;
+
+            if (tag === 'INPUT' || tag === 'TEXTAREA') {
+              element.value = text;
+            } else {
+              element.textContent = text;
+            }
+          });
+        } catch (error) {
+          // Ignore invalid selectors to keep the page functional.
+        }
+      });
+    }
+
     ensureBrandLogoVisibility();
     improveFaviconVisibility();
     applyImageOverrides();
+    applyTextOverrides();
 
     const observer = new IntersectionObserver(
       (entries) => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }),
