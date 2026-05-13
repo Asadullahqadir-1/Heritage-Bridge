@@ -53,5 +53,25 @@
       <pre id="content-display">Loading...</pre>
     </section>
   </main>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const isAuthenticated = localStorage.getItem('isAuthenticated');
+
+      if (!isAuthenticated) {
+        window.location.href = 'signin.html';
+      }
+
+      const signOutButton = document.createElement('button');
+      signOutButton.textContent = 'Sign Out';
+      signOutButton.style.margin = '1rem';
+      signOutButton.addEventListener('click', () => {
+        localStorage.removeItem('isAuthenticated');
+        window.location.href = 'signin.html';
+      });
+
+      document.body.prepend(signOutButton);
+    });
+  </script>
 </body>
 </html>
