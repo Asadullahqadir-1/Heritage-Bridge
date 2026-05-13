@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const net = require('net');
 const tls = require('tls');
 
 const KV_KEY = 'hb_site_content_v1';
@@ -55,7 +56,7 @@ function getRedisUrlConfig() {
       port: Number(parsed.port || 6379),
       username: decodeURIComponent(parsed.username || 'default'),
       password: decodeURIComponent(parsed.password || ''),
-      tls: true
+      tls: parsed.protocol === 'rediss:'
     };
   } catch (error) {
     return null;
@@ -181,21 +182,29 @@ async function redisCommand(config, args) {
         }
       }
 
-      const socket = tls.connect(
-        {
-          host: config.host,
-          port: config.port,
-          servername: config.host,
-          rejectUnauthorized: true
-        },
-        () => {
-          const commandPayload = authArgs
-            ? encodeRedisCommand(authArgs) + encodeRedisCommand(args)
-            : encodeRedisCommand(args);
+      const connectOptions = {
+        host: config.host,
+        port: config.port
+      };
 
-          socket.write(commandPayload);
-        }
-      );
+      const onConnect = () => {
+        const commandPayload = authArgs
+          ? encodeRedisCommand(authArgs) + encodeRedisCommand(args)
+          : encodeRedisCommand(args);
+
+        socket.write(commandPayload);
+      };
+
+      const socket = config.tls
+        ? tls.connect(
+            {
+              ...connectOptions,
+              servername: config.host,
+              rejectUnauthorized: true
+            },
+            onConnect
+          )
+        : net.createConnection(connectOptions, onConnect);
 
       socket.setEncoding('utf8');
       socket.setTimeout(6000);
