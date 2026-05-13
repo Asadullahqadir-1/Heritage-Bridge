@@ -283,7 +283,6 @@ module.exports = async function handler(req, res) {
 
   const redisConfig = getRedisUrlConfig();
   const kvConfig = getKvConfig();
-  const mode = redisConfig ? 'redis-url' : (kvConfig ? 'kv' : 'fallback');
 
   if (req.method === 'GET') {
     if (!redisConfig && !kvConfig) {
@@ -294,28 +293,36 @@ module.exports = async function handler(req, res) {
       });
     }
 
-    try {
-      const stored = redisConfig
-        ? await redisGet(redisConfig, KV_KEY)
-        : await kvGet(kvConfig, KV_KEY);
+    const warnings = [];
 
-      let parsed = null;
-      if (typeof stored === 'string') {
-        parsed = JSON.parse(stored);
-      } else {
-        parsed = stored;
+    if (redisConfig) {
+      try {
+        const stored = await redisGet(redisConfig, KV_KEY);
+        const parsed = typeof stored === 'string' ? JSON.parse(stored) : stored;
+        const payload = parsed ? sanitizePayload(parsed) : defaultPayload();
+        return res.status(200).json({ ok: true, mode: 'redis-url', data: payload });
+      } catch (error) {
+        warnings.push('Redis read failed');
       }
+    }
 
-      const payload = parsed ? sanitizePayload(parsed) : defaultPayload();
-      return res.status(200).json({ ok: true, mode, data: payload });
-    } catch (error) {
+    if (kvConfig) {
+      try {
+        const stored = await kvGet(kvConfig, KV_KEY);
+        const parsed = typeof stored === 'string' ? JSON.parse(stored) : stored;
+        const payload = parsed ? sanitizePayload(parsed) : defaultPayload();
+        return res.status(200).json({ ok: true, mode: 'kv', data: payload, warning: warnings.join('; ') || undefined });
+      } catch (error) {
+        warnings.push('KV read failed');
+      }
+    }
+
       return res.status(200).json({
         ok: true,
         mode: 'fallback',
         data: defaultPayload(),
-        warning: 'Storage read failed, using fallback content.'
+        warning: (warnings.join('; ') || 'Storage read failed') + ', using fallback content.'
       });
-    }
   }
 
   if (req.method === 'PUT') {
@@ -326,17 +333,28 @@ module.exports = async function handler(req, res) {
       });
     }
 
-    try {
-      const payload = sanitizePayload(req.body);
-      if (redisConfig) {
+    const payload = sanitizePayload(req.body);
+    const warnings = [];
+
+    if (redisConfig) {
+      try {
         await redisSet(redisConfig, KV_KEY, payload);
-      } else {
-        await kvSet(kvConfig, KV_KEY, payload);
+        return res.status(200).json({ ok: true, mode: 'redis-url' });
+      } catch (error) {
+        warnings.push('Redis write failed');
       }
-      return res.status(200).json({ ok: true, mode });
-    } catch (error) {
-      return res.status(500).json({ ok: false, error: 'Failed to save site content.' });
     }
+
+    if (kvConfig) {
+      try {
+        await kvSet(kvConfig, KV_KEY, payload);
+        return res.status(200).json({ ok: true, mode: 'kv', warning: warnings.join('; ') || undefined });
+      } catch (error) {
+        warnings.push('KV write failed');
+      }
+    }
+
+    return res.status(500).json({ ok: false, error: (warnings.join('; ') || 'Storage write failed') + '.' });
   }
 
   res.setHeader('Allow', 'GET, PUT');
