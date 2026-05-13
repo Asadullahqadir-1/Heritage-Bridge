@@ -71,31 +71,58 @@ function encodeRedisCommand(args) {
   return payload;
 }
 
-function parseRedisResponse(raw) {
-  if (!raw || raw.length < 1) throw new Error('Empty Redis response');
+function parseRedisFrame(raw, offset) {
+  if (offset >= raw.length) throw new Error('INCOMPLETE');
 
-  const type = raw[0];
+  const type = raw[offset];
+  const lineEnd = raw.indexOf('\r\n', offset);
+  if (lineEnd === -1) throw new Error('INCOMPLETE');
 
   if (type === '+') {
-    return raw.slice(1, raw.indexOf('\r\n'));
+    return {
+      kind: 'simple',
+      value: raw.slice(offset + 1, lineEnd),
+      nextOffset: lineEnd + 2
+    };
   }
 
   if (type === '-') {
-    const msg = raw.slice(1, raw.indexOf('\r\n'));
-    throw new Error('Redis error: ' + msg);
+    return {
+      kind: 'error',
+      value: raw.slice(offset + 1, lineEnd),
+      nextOffset: lineEnd + 2
+    };
   }
 
   if (type === ':') {
-    return Number(raw.slice(1, raw.indexOf('\r\n')));
+    return {
+      kind: 'integer',
+      value: Number(raw.slice(offset + 1, lineEnd)),
+      nextOffset: lineEnd + 2
+    };
   }
 
   if (type === '$') {
-    const lineEnd = raw.indexOf('\r\n');
-    const len = Number(raw.slice(1, lineEnd));
-    if (len === -1) return null;
+    const len = Number(raw.slice(offset + 1, lineEnd));
+    if (Number.isNaN(len)) throw new Error('Invalid bulk length');
+    if (len === -1) {
+      return {
+        kind: 'bulk',
+        value: null,
+        nextOffset: lineEnd + 2
+      };
+    }
+
     const start = lineEnd + 2;
     const end = start + len;
-    return raw.slice(start, end);
+    if (raw.length < end + 2) throw new Error('INCOMPLETE');
+    if (raw.slice(end, end + 2) !== '\r\n') throw new Error('Invalid bulk terminator');
+
+    return {
+      kind: 'bulk',
+      value: raw.slice(start, end),
+      nextOffset: end + 2
+    };
   }
 
   throw new Error('Unsupported Redis response type: ' + type);
@@ -103,6 +130,56 @@ function parseRedisResponse(raw) {
 
 async function redisCommand(config, args) {
   return new Promise((resolve, reject) => {
+    let settled = false;
+    let raw = '';
+
+    function safeResolve(value) {
+      if (settled) return;
+      settled = true;
+      socket.end();
+      resolve(value);
+    }
+
+    function safeReject(error) {
+      if (settled) return;
+      settled = true;
+      socket.destroy();
+      reject(error);
+    }
+
+    function tryParse() {
+      try {
+        let offset = 0;
+        let authFrame = null;
+        let commandFrame = null;
+
+        if (config.password) {
+          authFrame = parseRedisFrame(raw, offset);
+          offset = authFrame.nextOffset;
+          if (authFrame.kind === 'error') {
+            safeReject(new Error('Redis AUTH failed: ' + authFrame.value));
+            return;
+          }
+        }
+
+        commandFrame = parseRedisFrame(raw, offset);
+        if (commandFrame.kind === 'error') {
+          safeReject(new Error('Redis command failed: ' + commandFrame.value));
+          return;
+        }
+
+        if (authFrame && authFrame.value !== 'OK') {
+          safeReject(new Error('Redis AUTH failed'));
+          return;
+        }
+
+        safeResolve(commandFrame.value);
+      } catch (error) {
+        if (error.message === 'INCOMPLETE') return;
+        safeReject(error);
+      }
+    }
+
     const socket = tls.connect(
       {
         host: config.host,
@@ -112,7 +189,9 @@ async function redisCommand(config, args) {
       },
       () => {
         const authArgs = config.password
-          ? ['AUTH', config.username || 'default', config.password]
+          ? (config.username && config.username !== 'default'
+            ? ['AUTH', config.username, config.password]
+            : ['AUTH', config.password])
           : null;
 
         const commandPayload = authArgs
@@ -126,40 +205,17 @@ async function redisCommand(config, args) {
     socket.setEncoding('utf8');
     socket.setTimeout(6000);
 
-    let raw = '';
-
     socket.on('data', (chunk) => {
       raw += chunk;
+      tryParse();
     });
 
     socket.on('timeout', () => {
-      socket.destroy();
-      reject(new Error('Redis command timed out'));
+      safeReject(new Error('Redis command timed out'));
     });
 
     socket.on('error', (error) => {
-      reject(error);
-    });
-
-    socket.on('end', () => {
-      try {
-        if (!raw) return resolve(null);
-
-        // If AUTH is included, first response is +OK and second is command result.
-        if (config.password) {
-          const firstLineEnd = raw.indexOf('\r\n');
-          if (firstLineEnd === -1) throw new Error('Invalid Redis AUTH response');
-          const firstLine = raw.slice(0, firstLineEnd + 2);
-          const authResult = parseRedisResponse(firstLine);
-          if (authResult !== 'OK') throw new Error('Redis AUTH failed');
-          const rest = raw.slice(firstLineEnd + 2);
-          return resolve(parseRedisResponse(rest));
-        }
-
-        resolve(parseRedisResponse(raw));
-      } catch (error) {
-        reject(error);
-      }
+      safeReject(error);
     });
   });
 }
