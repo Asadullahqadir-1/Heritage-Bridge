@@ -16,15 +16,21 @@
   <main>
     <section class="content-editor">
       <h2>Edit Text Content</h2>
-      <label for="text-element">Select Text Element:</label>
+      <label for="text-element">Select Site Text:</label>
       <select id="text-element">
-        <option value="nav-about">About (Navigation)</option>
-        <option value="nav-gallery">Gallery (Navigation)</option>
-        <option value="nav-contact">Contact (Navigation)</option>
-        <option value="section-welcome">Welcome Section</option>
-        <option value="section-about">About Section</option>
-        <option value="section-gallery">Gallery Section</option>
-        <option value="section-contact">Contact Section</option>
+        <option value="nav-about">Navigation - About Us</option>
+        <option value="nav-services">Navigation - Services</option>
+        <option value="nav-gallery">Navigation - Gallery</option>
+        <option value="nav-team">Navigation - Our Team</option>
+        <option value="nav-contact">Navigation - Contact Us Button</option>
+        <option value="hero-eyebrow">Hero - Small Label</option>
+        <option value="hero-heading">Hero - Main Heading</option>
+        <option value="hero-description">Hero - Description Paragraph</option>
+        <option value="about-heading">About - Main Heading</option>
+        <option value="services-heading">Services - Main Heading</option>
+        <option value="team-heading">Team - Main Heading</option>
+        <option value="contact-heading">Contact - Main Heading</option>
+        <option value="footer-description">Footer - Description</option>
       </select>
 
       <label for="old-text">Old Text:</label>
@@ -38,15 +44,38 @@
 
     <section class="image-editor">
       <h2>Edit Images</h2>
-      <label for="image-element">Select Image Element:</label>
+      <p>Choose exactly where on the website this image should appear.</p>
+      <label for="image-element">Select Site Part:</label>
       <select id="image-element">
-        <option value="header-image">Header Image</option>
-        <option value="gallery-image-1">Gallery Image 1</option>
-        <option value="gallery-image-2">Gallery Image 2</option>
+        <option value="selector:.nav-logo-mark">Navigation Logo (Top Left)</option>
+        <option value="selector:footer .footer-brand .nav-logo img">Footer Logo</option>
+        <option value="hero-slide-1">Hero Slider - Slide 1 (Top Section)</option>
+        <option value="hero-slide-2">Hero Slider - Slide 2 (Top Section)</option>
+        <option value="hero-slide-3">Hero Slider - Slide 3 (Top Section)</option>
+        <option value="about-main">About Section - Main Image</option>
+        <option value="service-real-estate">Services - Real Estate Card</option>
+        <option value="service-business-setup">Services - Business Setup Card</option>
+        <option value="service-portfolio">Services - Portfolio Card</option>
+        <option value="team-member-1">Team - Member 1 Photo</option>
+        <option value="team-member-2">Team - Member 2 Photo</option>
+        <option value="team-member-3">Team - Member 3 Photo</option>
+        <option value="team-member-4">Team - Member 4 Photo</option>
+        <option value="custom-selector">Custom Target (Advanced)</option>
       </select>
+
+      <div id="custom-image-selector-wrap" class="hidden">
+        <label for="custom-image-selector">Custom CSS Selector:</label>
+        <input type="text" id="custom-image-selector" placeholder="Example: #gallery .gallery-item:nth-child(1) img" />
+      </div>
+
+      <p id="image-target-note" class="field-note">This image will replace the selected site part.</p>
 
       <label for="new-image">Upload New Image:</label>
       <input type="file" id="new-image" accept="image/*">
+
+      <label for="image-caption">Optional Image Description or Caption:</label>
+      <textarea id="image-caption" placeholder="Example: Advisors meeting with diaspora investors in Kigali"></textarea>
+      <p class="field-note">If provided, this will be used as image description (alt text) and as caption where supported.</p>
 
       <button type="button" id="save-image">Save Image</button>
     </section>

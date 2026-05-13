@@ -1458,18 +1458,29 @@
       Object.entries(keyOverrides).forEach(([key, value]) => {
         let src = '';
         let hidden = false;
+        let alt = '';
+        let caption = '';
 
         if (typeof value === 'string') {
           src = value.trim();
         } else if (value && typeof value === 'object') {
           if (typeof value.src === 'string') src = value.src.trim();
           hidden = Boolean(value.hidden);
+          if (typeof value.alt === 'string') alt = value.alt.trim();
+          if (typeof value.caption === 'string') caption = value.caption.trim();
         }
 
         const safeKey = key.replace(/"/g, '\\"');
         document.querySelectorAll(`[data-image-key="${safeKey}"]`).forEach((img) => {
           if (src) img.src = src;
           img.style.display = hidden ? 'none' : '';
+          if (alt) img.alt = alt;
+
+          const galleryItem = img.closest('.gallery-item');
+          if (galleryItem && caption) {
+            const captionEl = galleryItem.querySelector('.gallery-caption');
+            if (captionEl) captionEl.textContent = caption;
+          }
         });
       });
 
@@ -1480,6 +1491,7 @@
         if (!item || typeof item.selector !== 'string') return;
         const selector = item.selector.trim();
         const src = typeof item.src === 'string' ? item.src.trim() : '';
+        const caption = typeof item.caption === 'string' ? item.caption.trim() : '';
         const hidden = Boolean(item.hidden);
         if (!selector) return;
         if (!hidden && !src) return;
@@ -1490,6 +1502,12 @@
               if (!hidden && src) img.src = src;
               img.style.display = hidden ? 'none' : '';
               if (typeof item.alt === 'string' && item.alt.trim()) img.alt = item.alt.trim();
+
+              const galleryItem = img.closest('.gallery-item');
+              if (galleryItem && caption) {
+                const captionEl = galleryItem.querySelector('.gallery-caption');
+                if (captionEl) captionEl.textContent = caption;
+              }
             }
           });
         } catch (error) {

@@ -26,6 +26,11 @@ h1, h2 {
   color: #444;
 }
 
+p {
+  margin: 0.3rem 0 0.75rem;
+  color: #666;
+}
+
 label {
   display: block;
   margin: 1rem 0 0.5rem;
@@ -54,6 +59,16 @@ button:hover {
 
 .content-editor, .image-editor {
   margin-bottom: 2rem;
+}
+
+.field-note {
+  font-size: 0.9rem;
+  color: #555;
+  margin-top: -0.25rem;
+}
+
+.hidden {
+  display: none;
 }
 
 .current-content {
