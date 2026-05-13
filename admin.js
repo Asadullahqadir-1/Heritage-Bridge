@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
   const textElementDropdown = document.getElementById('text-element');
+  const oldTextInput = document.getElementById('old-text');
   const newTextInput = document.getElementById('new-text');
   const saveTextButton = document.getElementById('save-text');
 
@@ -18,10 +19,11 @@ document.addEventListener('DOMContentLoaded', () => {
   // Save new text content
   saveTextButton.addEventListener('click', () => {
     const selectedElement = textElementDropdown.value;
+    const oldText = oldTextInput.value;
     const newText = newTextInput.value;
 
-    if (!selectedElement || !newText) {
-      alert('Please select an element and enter new text.');
+    if (!selectedElement || !oldText || !newText) {
+      alert('Please select an element and enter both old and new text.');
       return;
     }
 
@@ -34,9 +36,16 @@ document.addEventListener('DOMContentLoaded', () => {
         // Navigate to the correct key in the JSON object
         for (let i = 0; i < keys.length - 1; i++) {
           if (!current[keys[i]]) {
-            current[keys[i]] = {};
+            alert('Invalid element selected.');
+            return;
           }
           current = current[keys[i]];
+        }
+
+        // Verify old text matches
+        if (current[keys[keys.length - 1]] !== oldText) {
+          alert('Old text does not match the current text. Please check and try again.');
+          return;
         }
 
         // Update the text
