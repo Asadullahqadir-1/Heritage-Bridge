@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
+  const SITE_CONTENT_API = '/api/site-content';
   const IMAGE_OVERRIDE_STORAGE_KEY = 'hb:image-overrides:v1';
   const IMAGE_SELECTOR_OVERRIDE_STORAGE_KEY = 'hb:image-selector-overrides:v1';
   const TEXT_SELECTOR_OVERRIDE_STORAGE_KEY = 'hb:text-selector-overrides:v1';
@@ -54,6 +55,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const contentDisplay = document.getElementById('content-display');
   let pendingCardTarget = null;
   let defaultSources = { byKey: {}, bySelector: {} };
+  let isHydratingFromRemote = false;
+  let syncTimer = null;
 
   function readJsonStorage(key, fallbackValue) {
     try {
@@ -64,8 +67,64 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  function scheduleRemoteSync() {
+    if (isHydratingFromRemote) return;
+    if (syncTimer) clearTimeout(syncTimer);
+    syncTimer = setTimeout(() => {
+      pushLocalOverridesToRemote();
+    }, 250);
+  }
+
   function writeJsonStorage(key, value) {
     localStorage.setItem(key, JSON.stringify(value));
+    scheduleRemoteSync();
+  }
+
+  function getLocalOverrideBundle() {
+    return {
+      textOverrides: readJsonStorage(TEXT_SELECTOR_OVERRIDE_STORAGE_KEY, []),
+      imageKeyOverrides: readJsonStorage(IMAGE_OVERRIDE_STORAGE_KEY, {}),
+      imageSelectorOverrides: readJsonStorage(IMAGE_SELECTOR_OVERRIDE_STORAGE_KEY, [])
+    };
+  }
+
+  async function pushLocalOverridesToRemote() {
+    const payload = getLocalOverrideBundle();
+
+    try {
+      const response = await fetch(SITE_CONTENT_API, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      });
+
+      if (!response.ok) {
+        console.warn('Remote sync failed with status', response.status);
+      }
+    } catch (error) {
+      console.warn('Remote sync failed:', error);
+    }
+  }
+
+  async function hydrateFromRemote() {
+    try {
+      const response = await fetch(SITE_CONTENT_API);
+      if (!response.ok) return;
+
+      const payload = await response.json();
+      if (!payload || !payload.ok || !payload.data) return;
+
+      const data = payload.data;
+      isHydratingFromRemote = true;
+      localStorage.setItem(TEXT_SELECTOR_OVERRIDE_STORAGE_KEY, JSON.stringify(Array.isArray(data.textOverrides) ? data.textOverrides : []));
+      localStorage.setItem(IMAGE_OVERRIDE_STORAGE_KEY, JSON.stringify(data.imageKeyOverrides && typeof data.imageKeyOverrides === 'object' ? data.imageKeyOverrides : {}));
+      localStorage.setItem(IMAGE_SELECTOR_OVERRIDE_STORAGE_KEY, JSON.stringify(Array.isArray(data.imageSelectorOverrides) ? data.imageSelectorOverrides : []));
+      isHydratingFromRemote = false;
+    } catch (error) {
+      isHydratingFromRemote = false;
+    }
   }
 
   function getSelectedImageTarget() {
@@ -330,10 +389,12 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   updateImageTargetUi();
-  refreshSummaryPanel();
 
-  loadDefaultImageSources().then(() => {
-    renderImageManager();
+  hydrateFromRemote().then(() => {
+    refreshSummaryPanel();
+    loadDefaultImageSources().then(() => {
+      renderImageManager();
+    });
   });
 
   imageElementDropdown.addEventListener('change', updateImageTargetUi);

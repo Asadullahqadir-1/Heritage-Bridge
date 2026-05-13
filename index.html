@@ -1400,6 +1400,7 @@
   </footer>
 
   <script>
+    const SITE_CONTENT_API = '/api/site-content';
     const IMAGE_OVERRIDE_STORAGE_KEY = 'hb:image-overrides:v1';
     const IMAGE_SELECTOR_OVERRIDE_STORAGE_KEY = 'hb:image-selector-overrides:v1';
     const TEXT_SELECTOR_OVERRIDE_STORAGE_KEY = 'hb:text-selector-overrides:v1';
@@ -1453,8 +1454,10 @@
       }
     }
 
-    function applyImageOverrides() {
-      const keyOverrides = readJsonStorage(IMAGE_OVERRIDE_STORAGE_KEY, {});
+    function applyImageOverrides(remoteData) {
+      const keyOverrides = remoteData && remoteData.imageKeyOverrides
+        ? remoteData.imageKeyOverrides
+        : readJsonStorage(IMAGE_OVERRIDE_STORAGE_KEY, {});
       Object.entries(keyOverrides).forEach(([key, value]) => {
         let src = '';
         let hidden = false;
@@ -1484,7 +1487,9 @@
         });
       });
 
-      const selectorOverrides = readJsonStorage(IMAGE_SELECTOR_OVERRIDE_STORAGE_KEY, []);
+      const selectorOverrides = remoteData && Array.isArray(remoteData.imageSelectorOverrides)
+        ? remoteData.imageSelectorOverrides
+        : readJsonStorage(IMAGE_SELECTOR_OVERRIDE_STORAGE_KEY, []);
       if (!Array.isArray(selectorOverrides)) return;
 
       selectorOverrides.forEach((item) => {
@@ -1516,8 +1521,10 @@
       });
     }
 
-    function applyTextOverrides() {
-      const textOverrides = readJsonStorage(TEXT_SELECTOR_OVERRIDE_STORAGE_KEY, []);
+    function applyTextOverrides(remoteData) {
+      const textOverrides = remoteData && Array.isArray(remoteData.textOverrides)
+        ? remoteData.textOverrides
+        : readJsonStorage(TEXT_SELECTOR_OVERRIDE_STORAGE_KEY, []);
       if (!Array.isArray(textOverrides)) return;
 
       textOverrides.forEach((item) => {
@@ -1543,10 +1550,43 @@
       });
     }
 
-    ensureBrandLogoVisibility();
-    improveFaviconVisibility();
-    applyImageOverrides();
-    applyTextOverrides();
+    async function loadLiveOverridesFromApi() {
+      try {
+        const response = await fetch(SITE_CONTENT_API);
+        if (!response.ok) return null;
+        const payload = await response.json();
+        if (!payload || !payload.ok || !payload.data) return null;
+        return payload.data;
+      } catch (error) {
+        return null;
+      }
+    }
+
+    async function initializeSiteContent() {
+      ensureBrandLogoVisibility();
+      improveFaviconVisibility();
+
+      const remoteData = await loadLiveOverridesFromApi();
+
+      if (remoteData) {
+        try {
+          localStorage.setItem(TEXT_SELECTOR_OVERRIDE_STORAGE_KEY, JSON.stringify(Array.isArray(remoteData.textOverrides) ? remoteData.textOverrides : []));
+          localStorage.setItem(IMAGE_OVERRIDE_STORAGE_KEY, JSON.stringify(remoteData.imageKeyOverrides && typeof remoteData.imageKeyOverrides === 'object' ? remoteData.imageKeyOverrides : {}));
+          localStorage.setItem(IMAGE_SELECTOR_OVERRIDE_STORAGE_KEY, JSON.stringify(Array.isArray(remoteData.imageSelectorOverrides) ? remoteData.imageSelectorOverrides : []));
+        } catch (error) {
+          // Continue using in-memory remoteData if localStorage write fails.
+        }
+
+        applyImageOverrides(remoteData);
+        applyTextOverrides(remoteData);
+        return;
+      }
+
+      applyImageOverrides();
+      applyTextOverrides();
+    }
+
+    initializeSiteContent();
 
     const observer = new IntersectionObserver(
       (entries) => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }),
