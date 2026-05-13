@@ -1,31 +1,34 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const form = document.getElementById('text-override-form');
-  const selectorInput = document.getElementById('css-selector');
-  const textInput = document.getElementById('replacement-text');
-  const saveButton = document.getElementById('save-text-override');
+  const textElementDropdown = document.getElementById('text-element');
+  const newTextInput = document.getElementById('new-text');
+  const saveTextButton = document.getElementById('save-text');
+
+  const imageElementDropdown = document.getElementById('image-element');
+  const newImageInput = document.getElementById('new-image');
+  const saveImageButton = document.getElementById('save-image');
 
   // Load existing content.json data
   fetch('content.json')
     .then(response => response.json())
     .then(data => {
       const contentDisplay = document.getElementById('content-display');
-      contentDisplay.innerHTML = JSON.stringify(data, null, 2);
+      contentDisplay.textContent = JSON.stringify(data, null, 2);
     });
 
-  // Save new text override
-  saveButton.addEventListener('click', () => {
-    const selector = selectorInput.value;
-    const newText = textInput.value;
+  // Save new text content
+  saveTextButton.addEventListener('click', () => {
+    const selectedElement = textElementDropdown.value;
+    const newText = newTextInput.value;
 
-    if (!selector || !newText) {
-      alert('Please fill in both fields.');
+    if (!selectedElement || !newText) {
+      alert('Please select an element and enter new text.');
       return;
     }
 
     fetch('content.json')
       .then(response => response.json())
       .then(data => {
-        const keys = selector.split('.');
+        const keys = selectedElement.split('-');
         let current = data;
 
         // Navigate to the correct key in the JSON object
@@ -55,6 +58,34 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('Error saving content:', err);
             alert('Failed to save changes.');
           });
+      });
+  });
+
+  // Save new image content
+  saveImageButton.addEventListener('click', () => {
+    const selectedImage = imageElementDropdown.value;
+    const newImageFile = newImageInput.files[0];
+
+    if (!selectedImage || !newImageFile) {
+      alert('Please select an image element and upload a new image.');
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('image', newImageFile);
+    formData.append('element', selectedImage);
+
+    fetch('upload-image', {
+      method: 'POST',
+      body: formData,
+    })
+      .then(() => {
+        alert('Image updated successfully!');
+        location.reload();
+      })
+      .catch(err => {
+        console.error('Error uploading image:', err);
+        alert('Failed to upload image.');
       });
   });
 });
