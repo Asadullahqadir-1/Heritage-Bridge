@@ -129,95 +129,112 @@ function parseRedisFrame(raw, offset) {
 }
 
 async function redisCommand(config, args) {
-  return new Promise((resolve, reject) => {
-    let settled = false;
-    let raw = '';
+  async function runWithAuthArgs(authArgs) {
+    return new Promise((resolve, reject) => {
+      let settled = false;
+      let raw = '';
 
-    function safeResolve(value) {
-      if (settled) return;
-      settled = true;
-      socket.end();
-      resolve(value);
-    }
+      function safeResolve(value) {
+        if (settled) return;
+        settled = true;
+        socket.end();
+        resolve(value);
+      }
 
-    function safeReject(error) {
-      if (settled) return;
-      settled = true;
-      socket.destroy();
-      reject(error);
-    }
+      function safeReject(error) {
+        if (settled) return;
+        settled = true;
+        socket.destroy();
+        reject(error);
+      }
 
-    function tryParse() {
-      try {
-        let offset = 0;
-        let authFrame = null;
-        let commandFrame = null;
+      function tryParse() {
+        try {
+          let offset = 0;
+          let authFrame = null;
+          let commandFrame = null;
 
-        if (config.password) {
-          authFrame = parseRedisFrame(raw, offset);
-          offset = authFrame.nextOffset;
-          if (authFrame.kind === 'error') {
-            safeReject(new Error('Redis AUTH failed: ' + authFrame.value));
+          if (authArgs) {
+            authFrame = parseRedisFrame(raw, offset);
+            offset = authFrame.nextOffset;
+            if (authFrame.kind === 'error') {
+              safeReject(new Error('Redis AUTH failed: ' + authFrame.value));
+              return;
+            }
+          }
+
+          commandFrame = parseRedisFrame(raw, offset);
+          if (commandFrame.kind === 'error') {
+            safeReject(new Error('Redis command failed: ' + commandFrame.value));
             return;
           }
-        }
 
-        commandFrame = parseRedisFrame(raw, offset);
-        if (commandFrame.kind === 'error') {
-          safeReject(new Error('Redis command failed: ' + commandFrame.value));
-          return;
-        }
+          if (authFrame && authFrame.value !== 'OK') {
+            safeReject(new Error('Redis AUTH failed'));
+            return;
+          }
 
-        if (authFrame && authFrame.value !== 'OK') {
-          safeReject(new Error('Redis AUTH failed'));
-          return;
+          safeResolve(commandFrame.value);
+        } catch (error) {
+          if (error.message === 'INCOMPLETE') return;
+          safeReject(error);
         }
+      }
 
-        safeResolve(commandFrame.value);
-      } catch (error) {
-        if (error.message === 'INCOMPLETE') return;
+      const socket = tls.connect(
+        {
+          host: config.host,
+          port: config.port,
+          servername: config.host,
+          rejectUnauthorized: true
+        },
+        () => {
+          const commandPayload = authArgs
+            ? encodeRedisCommand(authArgs) + encodeRedisCommand(args)
+            : encodeRedisCommand(args);
+
+          socket.write(commandPayload);
+        }
+      );
+
+      socket.setEncoding('utf8');
+      socket.setTimeout(6000);
+
+      socket.on('data', (chunk) => {
+        raw += chunk;
+        tryParse();
+      });
+
+      socket.on('timeout', () => {
+        safeReject(new Error('Redis command timed out'));
+      });
+
+      socket.on('error', (error) => {
         safeReject(error);
-      }
+      });
+    });
+  }
+
+  const authVariants = config.password
+    ? [
+        ['AUTH', config.username || 'default', config.password],
+        ['AUTH', config.password]
+      ]
+    : [null];
+
+  let lastError = null;
+
+  for (const authArgs of authVariants) {
+    try {
+      return await runWithAuthArgs(authArgs);
+    } catch (error) {
+      lastError = error;
+      const isAuthFailure = String(error && error.message || '').toLowerCase().includes('auth');
+      if (!isAuthFailure) throw error;
     }
+  }
 
-    const socket = tls.connect(
-      {
-        host: config.host,
-        port: config.port,
-        servername: config.host,
-        rejectUnauthorized: true
-      },
-      () => {
-        const authArgs = config.password
-          ? (config.username && config.username !== 'default'
-            ? ['AUTH', config.username, config.password]
-            : ['AUTH', config.password])
-          : null;
-
-        const commandPayload = authArgs
-          ? encodeRedisCommand(authArgs) + encodeRedisCommand(args)
-          : encodeRedisCommand(args);
-
-        socket.write(commandPayload);
-      }
-    );
-
-    socket.setEncoding('utf8');
-    socket.setTimeout(6000);
-
-    socket.on('data', (chunk) => {
-      raw += chunk;
-      tryParse();
-    });
-
-    socket.on('timeout', () => {
-      safeReject(new Error('Redis command timed out'));
-    });
-
-    socket.on('error', (error) => {
-      safeReject(error);
-    });
-  });
+  throw lastError || new Error('Redis command failed');
 }
 
 async function redisGet(config, key) {
