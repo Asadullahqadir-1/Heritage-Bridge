@@ -78,6 +78,12 @@
       <p class="field-note">If provided, this will be used as image description (alt text) and as caption where supported.</p>
 
       <button type="button" id="save-image">Save Image</button>
+      <button type="button" id="delete-image" class="danger-btn">Delete Selected Override</button>
+
+      <h3>Current Site Images</h3>
+      <p class="field-note">Each card shows the current image in use for that site section.</p>
+      <div id="image-manager-grid" class="image-manager-grid"></div>
+      <input type="file" id="card-image-input" accept="image/*" class="hidden">
     </section>
 
     <section class="current-content">
