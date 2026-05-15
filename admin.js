@@ -468,8 +468,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const currentText = await resolveCurrentSiteText(selector);
     if (normalizeText(currentText) && normalizeText(currentText) !== normalizeText(oldText)) {
-      alert('Old text does not match current site text for this section. Please check and try again.');
-      return;
+      const saveAnyway = window.confirm(
+        'The text you entered does not match the current site text for this section.\n\n' +
+        'Current site text:\n' + currentText + '\n\n' +
+        'Save the new text anyway?'
+      );
+      if (!saveAnyway) return;
     }
 
     const textOverrides = readJsonStorage(TEXT_SELECTOR_OVERRIDE_STORAGE_KEY, []);
