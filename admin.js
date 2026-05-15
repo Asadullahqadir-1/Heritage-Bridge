@@ -29,9 +29,20 @@ document.addEventListener('DOMContentLoaded', () => {
     'hero-eyebrow': '.hero-eyebrow',
     'hero-heading': '.hero-headline',
     'hero-description': '.hero-sub',
+    'east-africa-badge-title': '#about .hero-location-badge strong',
+    'east-africa-badge-countries': '#about .hero-location-badge',
     'about-heading': '#about .about-text h2',
     'services-heading': '#services .services-header h2',
     'team-heading': '#team .gallery-header h2',
+    'values-heading': '#values .values-text h2',
+    'values-copy': '#values .values-text p',
+    'value-1-title': '#values .value-row:nth-child(1) .value-content h3',
+    'value-1-copy': '#values .value-row:nth-child(1) .value-content p',
+    'value-2-title': '#values .value-row:nth-child(2) .value-content h3',
+    'value-2-copy': '#values .value-row:nth-child(2) .value-content p',
+    'contact-office': '#contact .contact-detail:nth-child(1) .contact-detail-text span',
+    'contact-email': '#contact .contact-detail:nth-child(2) .contact-detail-text span',
+    'contact-phone': '#contact .contact-detail:nth-child(3) .contact-detail-text span',
     'contact-heading': '#contact .contact-info h2',
     'footer-description': 'footer .footer-brand p'
   };
@@ -202,6 +213,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const isCustomSelector = imageElementDropdown.value === 'custom-selector';
     customImageSelectorWrap.classList.toggle('hidden', !isCustomSelector);
     imageTargetNote.textContent = 'Target: ' + selectedText;
+  }
+
+  function normalizeText(value) {
+    return typeof value === 'string' ? value.replace(/\s+/g, ' ').trim() : '';
+  }
+
+  async function populateOldTextForSelectedTarget() {
+    const selector = textSelectorMap[textElementDropdown.value];
+    if (!selector) {
+      oldTextInput.value = '';
+      return;
+    }
+
+    const currentText = await resolveCurrentSiteText(selector);
+    oldTextInput.value = currentText || '';
   }
 
   async function resolveCurrentSiteText(selector) {
@@ -389,6 +415,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   updateImageTargetUi();
+  populateOldTextForSelectedTarget();
 
   hydrateFromRemote().then(() => {
     refreshSummaryPanel();
@@ -398,6 +425,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   imageElementDropdown.addEventListener('change', updateImageTargetUi);
+  textElementDropdown.addEventListener('change', populateOldTextForSelectedTarget);
 
   cardImageInput.addEventListener('change', () => {
     const file = cardImageInput.files[0];
@@ -436,7 +464,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const currentText = await resolveCurrentSiteText(selector);
-    if (currentText && currentText !== oldText) {
+    if (normalizeText(currentText) && normalizeText(currentText) !== normalizeText(oldText)) {
       alert('Old text does not match current site text for this section. Please check and try again.');
       return;
     }
