@@ -216,7 +216,9 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function normalizeText(value) {
-    return typeof value === 'string' ? value.replace(/\s+/g, ' ').trim() : '';
+    return typeof value === 'string'
+      ? value.replace(/\s+/g, ' ').trim()
+      : '';
   }
 
   async function populateOldTextForSelectedTarget() {
@@ -244,7 +246,8 @@ document.addEventListener('DOMContentLoaded', () => {
       const doc = parser.parseFromString(html, 'text/html');
       const target = doc.querySelector(selector);
       if (!target) return '';
-      return target.textContent.trim();
+      const rawText = typeof target.innerText === 'string' ? target.innerText : target.textContent;
+      return normalizeText(rawText);
     } catch (error) {
       return '';
     }
