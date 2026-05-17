@@ -24,13 +24,29 @@ function defaultPayload() {
   };
 }
 
+function normalizeTextOverridesForCountryBadge(overrides) {
+  if (!Array.isArray(overrides)) return [];
+  const selectorMap = Object.create(null);
+  overrides.forEach((item) => {
+    if (!item || typeof item.selector !== 'string' || typeof item.text !== 'string') return;
+    let selector = item.selector.trim();
+    let text = item.text;
+    if (selector === '#about .hero-location-badge') {
+      selector = '#about .hero-location-badge .country-list';
+      text = String(text).replace(/^East\s+Africa\s*[·\u00B7\s-]*?/i, '').trim();
+    }
+    selectorMap[selector] = { selector, text };
+  });
+  return Object.keys(selectorMap).map((key) => selectorMap[key]);
+}
+
 function sanitizePayload(value) {
   const fallback = defaultPayload();
   const input = value && typeof value === 'object' ? value : {};
 
   return {
     content: input.content && typeof input.content === 'object' ? input.content : fallback.content,
-    textOverrides: Array.isArray(input.textOverrides) ? input.textOverrides : [],
+    textOverrides: normalizeTextOverridesForCountryBadge(Array.isArray(input.textOverrides) ? input.textOverrides : []),
     imageKeyOverrides: input.imageKeyOverrides && typeof input.imageKeyOverrides === 'object' ? input.imageKeyOverrides : {},
     imageSelectorOverrides: Array.isArray(input.imageSelectorOverrides) ? input.imageSelectorOverrides : []
   };

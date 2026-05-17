@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
     'hero-heading': '.hero-headline',
     'hero-description': '.hero-sub',
     'east-africa-badge-title': '#about .hero-location-badge strong',
-    'east-africa-badge-countries': '#about .hero-location-badge',
+    'east-africa-badge-countries': '#about .hero-location-badge .country-list',
     'about-heading': '#about .about-text h2',
     'services-heading': '#services .services-header h2',
     'team-heading': '#team .gallery-header h2',
@@ -51,6 +51,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const oldTextInput = document.getElementById('old-text');
   const newTextInput = document.getElementById('new-text');
   const saveTextButton = document.getElementById('save-text');
+
+  const countryOrderList = document.getElementById('country-order-list');
+  const moveCountryUpButton = document.getElementById('move-country-up');
+  const moveCountryDownButton = document.getElementById('move-country-down');
+  const saveCountryOrderButton = document.getElementById('save-country-order');
+  const resetCountryOrderButton = document.getElementById('reset-country-order');
 
   const imageElementDropdown = document.getElementById('image-element');
   const customImageSelectorWrap = document.getElementById('custom-image-selector-wrap');
@@ -109,14 +115,16 @@ document.addEventListener('DOMContentLoaded', () => {
         const remotePayload = await remoteResponse.json();
         if (remotePayload && remotePayload.ok && remotePayload.data) {
           const existing = remotePayload.data;
+          const existingTextOverrides = normalizeTextOverridesForCountryBadge(Array.isArray(existing.textOverrides) ? existing.textOverrides : []);
+          const localTextOverrides = normalizeTextOverridesForCountryBadge(Array.isArray(localBundle.textOverrides) ? localBundle.textOverrides : []);
 
           const textMap = Object.create(null);
-          (existing.textOverrides || []).forEach((item) => {
+          existingTextOverrides.forEach((item) => {
             if (item && typeof item.selector === 'string') {
               textMap[item.selector] = item;
             }
           });
-          (localBundle.textOverrides || []).forEach((item) => {
+          localTextOverrides.forEach((item) => {
             if (item && typeof item.selector === 'string') {
               textMap[item.selector] = item;
             }
@@ -173,7 +181,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const data = payload.data;
       isHydratingFromRemote = true;
-      localStorage.setItem(TEXT_SELECTOR_OVERRIDE_STORAGE_KEY, JSON.stringify(Array.isArray(data.textOverrides) ? data.textOverrides : []));
+      localStorage.setItem(TEXT_SELECTOR_OVERRIDE_STORAGE_KEY, JSON.stringify(normalizeTextOverridesForCountryBadge(Array.isArray(data.textOverrides) ? data.textOverrides : [])));
       localStorage.setItem(IMAGE_OVERRIDE_STORAGE_KEY, JSON.stringify(data.imageKeyOverrides && typeof data.imageKeyOverrides === 'object' ? data.imageKeyOverrides : {}));
       localStorage.setItem(IMAGE_SELECTOR_OVERRIDE_STORAGE_KEY, JSON.stringify(Array.isArray(data.imageSelectorOverrides) ? data.imageSelectorOverrides : []));
       isHydratingFromRemote = false;
@@ -295,6 +303,102 @@ document.addEventListener('DOMContentLoaded', () => {
     } catch (error) {
       return '';
     }
+  }
+
+  const DEFAULT_COUNTRY_ORDER = ['Kenya', 'Tanzania', 'Uganda', 'Rwanda'];
+  let currentCountryOrder = [...DEFAULT_COUNTRY_ORDER];
+  let selectedCountryIndex = 0;
+
+  function normalizeCountryBadgeText(text) {
+    const trimmed = normalizeText(text || '');
+    const prefix = /^East\s+Africa\s*[·\u00B7\s-]*?/i;
+    return normalizeText(trimmed.replace(prefix, '').trim()) || DEFAULT_COUNTRY_ORDER.join(' · ');
+  }
+
+  function parseCountryListText(text) {
+    const normalized = normalizeCountryBadgeText(text);
+    return normalized.split(/\s*[·\u00B7]\s*/).filter(Boolean);
+  }
+
+  function renderCountryOrderList() {
+    if (!countryOrderList) return;
+    countryOrderList.innerHTML = '';
+
+    currentCountryOrder.forEach((country, index) => {
+      const item = document.createElement('li');
+      item.className = 'country-order-item' + (index === selectedCountryIndex ? ' selected' : '');
+      item.textContent = country;
+      item.dataset.index = String(index);
+      item.addEventListener('click', () => {
+        selectedCountryIndex = index;
+        renderCountryOrderList();
+      });
+      countryOrderList.appendChild(item);
+    });
+  }
+
+  function saveSelectorTextOverride(selector, text) {
+    const textOverrides = readJsonStorage(TEXT_SELECTOR_OVERRIDE_STORAGE_KEY, []);
+    const existingIndex = textOverrides.findIndex((item) => item && item.selector === selector);
+    const newEntry = { selector, text };
+    if (existingIndex >= 0) {
+      textOverrides[existingIndex] = newEntry;
+    } else {
+      textOverrides.push(newEntry);
+    }
+    writeJsonStorage(TEXT_SELECTOR_OVERRIDE_STORAGE_KEY, textOverrides);
+    refreshSummaryPanel();
+  }
+
+  async function loadCountryOrderEditor() {
+    try {
+      const currentText = await resolveCurrentSiteText(textSelectorMap['east-africa-badge-countries']);
+      const parsed = parseCountryListText(currentText);
+      currentCountryOrder = parsed.length ? parsed : [...DEFAULT_COUNTRY_ORDER];
+    } catch (error) {
+      currentCountryOrder = [...DEFAULT_COUNTRY_ORDER];
+    }
+    selectedCountryIndex = 0;
+    renderCountryOrderList();
+  }
+
+  function moveSelectedCountry(offset) {
+    if (!countryOrderList) return;
+    const newIndex = selectedCountryIndex + offset;
+    if (newIndex < 0 || newIndex >= currentCountryOrder.length) return;
+    const item = currentCountryOrder[selectedCountryIndex];
+    currentCountryOrder.splice(selectedCountryIndex, 1);
+    currentCountryOrder.splice(newIndex, 0, item);
+    selectedCountryIndex = newIndex;
+    renderCountryOrderList();
+  }
+
+  function saveCountryOrder() {
+    const text = currentCountryOrder.join(' · ');
+    saveSelectorTextOverride(textSelectorMap['east-africa-badge-countries'], text);
+    alert('Country order saved. Refresh homepage to confirm.');
+  }
+
+  function resetCountryOrder() {
+    currentCountryOrder = [...DEFAULT_COUNTRY_ORDER];
+    selectedCountryIndex = 0;
+    renderCountryOrderList();
+  }
+
+  function normalizeTextOverridesForCountryBadge(overrides) {
+    if (!Array.isArray(overrides)) return overrides;
+    const selectorMap = Object.create(null);
+    overrides.forEach((item) => {
+      if (!item || typeof item.selector !== 'string' || typeof item.text !== 'string') return;
+      let selector = item.selector.trim();
+      let text = item.text;
+      if (selector === '#about .hero-location-badge') {
+        selector = '#about .hero-location-badge .country-list';
+        text = normalizeCountryBadgeText(text);
+      }
+      selectorMap[selector] = { selector, text };
+    });
+    return Object.keys(selectorMap).map((key) => selectorMap[key]);
   }
 
   async function loadDefaultImageSources() {
@@ -466,6 +570,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   hydrateFromRemote().then(() => {
     refreshSummaryPanel();
+    loadCountryOrderEditor();
     loadDefaultImageSources().then(() => {
       renderImageManager();
     });
@@ -534,6 +639,25 @@ document.addEventListener('DOMContentLoaded', () => {
     refreshSummaryPanel();
     alert('Text updated for selected site section. Refresh homepage to confirm.');
   });
+
+  if (moveCountryUpButton) {
+    moveCountryUpButton.addEventListener('click', () => moveSelectedCountry(-1));
+  }
+
+  if (moveCountryDownButton) {
+    moveCountryDownButton.addEventListener('click', () => moveSelectedCountry(1));
+  }
+
+  if (saveCountryOrderButton) {
+    saveCountryOrderButton.addEventListener('click', saveCountryOrder);
+  }
+
+  if (resetCountryOrderButton) {
+    resetCountryOrderButton.addEventListener('click', () => {
+      resetCountryOrder();
+      alert('Country order reset to default.');
+    });
+  }
 
   saveImageButton.addEventListener('click', () => {
     const target = getSelectedImageTarget();
