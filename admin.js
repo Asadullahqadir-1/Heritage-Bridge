@@ -100,7 +100,51 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   async function pushLocalOverridesToRemote() {
-    const payload = getLocalOverrideBundle();
+    const localBundle = getLocalOverrideBundle();
+    let payload = localBundle;
+
+    try {
+      const remoteResponse = await fetch(SITE_CONTENT_API);
+      if (remoteResponse.ok) {
+        const remotePayload = await remoteResponse.json();
+        if (remotePayload && remotePayload.ok && remotePayload.data) {
+          const existing = remotePayload.data;
+
+          const textMap = Object.create(null);
+          (existing.textOverrides || []).forEach((item) => {
+            if (item && typeof item.selector === 'string') {
+              textMap[item.selector] = item;
+            }
+          });
+          (localBundle.textOverrides || []).forEach((item) => {
+            if (item && typeof item.selector === 'string') {
+              textMap[item.selector] = item;
+            }
+          });
+
+          const selectorMap = Object.create(null);
+          (existing.imageSelectorOverrides || []).forEach((item) => {
+            if (item && typeof item.selector === 'string') {
+              selectorMap[item.selector] = item;
+            }
+          });
+          (localBundle.imageSelectorOverrides || []).forEach((item) => {
+            if (item && typeof item.selector === 'string') {
+              selectorMap[item.selector] = item;
+            }
+          });
+
+          payload = {
+            textOverrides: Object.keys(textMap).map((selector) => textMap[selector]),
+            imageKeyOverrides: Object.assign({}, existing.imageKeyOverrides || {}, localBundle.imageKeyOverrides || {}),
+            imageSelectorOverrides: Object.keys(selectorMap).map((selector) => selectorMap[selector])
+          };
+        }
+      }
+    } catch (error) {
+      console.warn('Remote merge failed, using local bundle:', error);
+      payload = localBundle;
+    }
 
     try {
       const response = await fetch(SITE_CONTENT_API, {
