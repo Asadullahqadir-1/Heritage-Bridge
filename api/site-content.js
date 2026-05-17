@@ -342,12 +342,54 @@ module.exports = async function handler(req, res) {
       });
     }
 
-    const payload = sanitizePayload(req.body);
+    const incoming = sanitizePayload(req.body);
     const warnings = [];
+
+    // Read existing stored payload so we can merge rather than blindly replace.
+    let existing = defaultPayload();
+    try {
+      if (redisConfig) {
+        const stored = await redisGet(redisConfig, KV_KEY);
+        const parsed = typeof stored === 'string' ? JSON.parse(stored) : stored;
+        existing = parsed ? sanitizePayload(parsed) : existing;
+      } else if (kvConfig) {
+        const stored = await kvGet(kvConfig, KV_KEY);
+        const parsed = typeof stored === 'string' ? JSON.parse(stored) : stored;
+        existing = parsed ? sanitizePayload(parsed) : existing;
+      }
+    } catch (err) {
+      // ignore read errors here; we'll fall back to defaults
+    }
+
+    // Merge strategy:
+    // - content: prefer incoming.content when provided, otherwise keep existing
+    // - textOverrides: if incoming provided (array) replace entirely, else keep existing
+    // - imageKeyOverrides: shallow-merge existing with incoming (incoming keys overwrite existing)
+    // - imageSelectorOverrides: merge by selector (incoming entries overwrite matching selectors)
+
+    const merged = {
+      content: incoming.content && typeof incoming.content === 'object' ? incoming.content : existing.content,
+      textOverrides: Array.isArray(req.body && req.body.textOverrides) ? incoming.textOverrides : existing.textOverrides,
+      imageKeyOverrides: Object.assign({}, existing.imageKeyOverrides || {}, incoming.imageKeyOverrides || {}),
+      imageSelectorOverrides: []
+    };
+
+    // Build a map for existing selector overrides
+    const selectorMap = Object.create(null);
+    (existing.imageSelectorOverrides || []).forEach((it) => {
+      if (it && typeof it.selector === 'string') selectorMap[it.selector] = it;
+    });
+
+    // Apply incoming selector overrides (overwrite by selector)
+    (incoming.imageSelectorOverrides || []).forEach((it) => {
+      if (it && typeof it.selector === 'string') selectorMap[it.selector] = it;
+    });
+
+    merged.imageSelectorOverrides = Object.keys(selectorMap).map((k) => selectorMap[k]);
 
     if (redisConfig) {
       try {
-        await redisSet(redisConfig, KV_KEY, payload);
+        await redisSet(redisConfig, KV_KEY, merged);
         return res.status(200).json({ ok: true, mode: 'redis-url' });
       } catch (error) {
         warnings.push('Redis write failed');
@@ -356,7 +398,7 @@ module.exports = async function handler(req, res) {
 
     if (kvConfig) {
       try {
-        await kvSet(kvConfig, KV_KEY, payload);
+        await kvSet(kvConfig, KV_KEY, merged);
         return res.status(200).json({ ok: true, mode: 'kv', warning: warnings.join('; ') || undefined });
       } catch (error) {
         warnings.push('KV write failed');
