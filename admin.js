@@ -15,17 +15,14 @@ document.addEventListener('DOMContentLoaded', () => {
     { label: 'Services - Business Setup Card', type: 'key', key: 'service-business-setup', selectValue: 'service-business-setup' },
     { label: 'Services - Portfolio Card', type: 'key', key: 'service-portfolio', selectValue: 'service-portfolio' },
     { label: 'Team - Member 1 Photo', type: 'key', key: 'team-member-1', selectValue: 'team-member-1' },
-    { label: 'Team - Member 2 Photo', type: 'key', key: 'team-member-2', selectValue: 'team-member-2' },
-    { label: 'Team - Member 3 Photo', type: 'key', key: 'team-member-3', selectValue: 'team-member-3' },
-    { label: 'Team - Member 4 Photo', type: 'key', key: 'team-member-4', selectValue: 'team-member-4' }
+    { label: 'Team - Member 2 Photo', type: 'key', key: 'team-member-2', selectValue: 'team-member-2' }
   ];
 
   const textSelectorMap = {
     'nav-about': '.nav-links li:nth-child(1) a',
     'nav-services': '.nav-links li:nth-child(2) a',
-    'nav-gallery': '.nav-links li:nth-child(3) a',
-    'nav-team': '.nav-links li:nth-child(4) a',
-    'nav-contact': '.nav-links li:nth-child(5) a',
+    'nav-team': '.nav-links li:nth-child(3) a',
+    'nav-contact': '.nav-links li:nth-child(4) a',
     'hero-eyebrow': '.hero-eyebrow',
     'hero-heading': '.hero-headline',
     'hero-description': '.hero-sub',
