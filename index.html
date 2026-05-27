@@ -1130,21 +1130,6 @@
             <img data-image-key="hero-slide-1" src="./images/image1.png" alt="East Africa investment landscape" />
           </div>
         </div>
-        <div class="hero-slide">
-          <div class="hero-right">
-            <img data-image-key="hero-slide-2" src="https://picsum.photos/seed/eastafrica-invest-2/1600/900" alt="Diaspora advisory consultation" />
-          </div>
-        </div>
-        <div class="hero-slide">
-          <div class="hero-right">
-            <img data-image-key="hero-slide-3" src="https://picsum.photos/seed/eastafrica-invest-3/1600/900" alt="Business growth opportunities in East Africa" />
-          </div>
-        </div>
-        <div class="hero-slide-dots">
-          <button class="hero-slide-dot active" aria-label="Slide 1"></button>
-          <button class="hero-slide-dot" aria-label="Slide 2"></button>
-          <button class="hero-slide-dot" aria-label="Slide 3"></button>
-        </div>
       </div>
     </div>
   </section>
@@ -1239,7 +1224,7 @@
       <div class="team-carousel-wrap">
         <div class="team-carousel" id="teamCarousel">
           <div class="team-slide">
-            <img data-image-key="team-member-1" src="./images/team-eunice.svg" alt="Dr. Eunice K. Kakoma" />
+            <img data-image-key="team-member-1" src="./images/author.png" alt="Dr. Eunice K. Kakoma" />
             <div class="team-slide-body">
               <h3>Dr. Eunice K. Kakoma</h3>
               <span class="team-role">Managing Director</span>
@@ -1634,32 +1619,32 @@
       });
     });
 
-      // Hero Slideshow - DISABLED - Only displaying first image with no animation
-    const heroSlides = document.querySelectorAll('.hero-slide');
-    if (heroSlides.length > 0) {
-      // Ensure only the first slide is visible, others are hidden
-      heroSlides.forEach((slide, i) => {
-        if (i === 0) {
-          slide.classList.add('active');
-          slide.style.display = 'block';
-          slide.style.visibility = 'visible';
-          slide.style.opacity = '1';
-          slide.style.pointerEvents = 'auto';
-        } else {
-          slide.classList.remove('active');
-          slide.style.display = 'none';
-          slide.style.visibility = 'hidden';
-          slide.style.opacity = '0';
-          slide.style.pointerEvents = 'none';
-        }
+      // Hero Slideshow - DISABLED - remove extra slides and dots from DOM
+    (function disableHeroSlideshow() {
+      const slideshow = document.querySelector('.hero-slideshow-container');
+      if (!slideshow) return;
+
+      // Remove all slides except the first one to prevent any slideshow behavior
+      const slides = Array.from(slideshow.querySelectorAll('.hero-slide'));
+      slides.forEach((slide, i) => {
+        if (i === 0) return;
+        slide.remove();
       });
-      // Hide the dots
-      const dotsContainer = document.querySelector('.hero-slide-dots');
-      if (dotsContainer) {
-        dotsContainer.style.display = 'none';
-        dotsContainer.style.visibility = 'hidden';
+
+      // Remove the dots navigation entirely
+      const dots = slideshow.querySelector('.hero-slide-dots');
+      if (dots) dots.remove();
+
+      // Make sure the remaining first slide is visible and active
+      const first = slideshow.querySelector('.hero-slide');
+      if (first) {
+        first.classList.add('active');
+        first.style.display = 'block';
+        first.style.visibility = 'visible';
+        first.style.opacity = '1';
+        first.style.pointerEvents = 'auto';
       }
-    }
+    })();
 
     // Team Carousel
     const carousel = document.getElementById('teamCarousel');
