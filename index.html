@@ -265,7 +265,7 @@
       bottom: 20px;
       left: 50%;
       transform: translateX(-50%);
-      display: flex;
+      display: none;
       gap: 8px;
       z-index: 10;
     }
@@ -282,6 +282,12 @@
 
     .hero-slide-dot.active {
       background: var(--cream);
+    }
+
+    /* Hide hero slides 2 and 3 - Disable slideshow */
+    .hero-slide:nth-child(2),
+    .hero-slide:nth-child(3) {
+      display: none !important;
     }
 
     .hero-location-badge {
@@ -1225,7 +1231,7 @@
             <div class="team-slide-body">
               <h3>Dr. Eunice K. Kakoma</h3>
               <span class="team-role">Managing Director</span>
-              <p>Dr. Eunice K. Kakoma is a Clinical Strategic Advisor with over 15 years of leadership experience in the U.S. healthcare sector, focused on healthcare operations, mental health, and strategic systems improvement. She brings extensive advisory experience bridging diaspora networks and development initiatives across East Africa.</p>
+              <p>Dr. Eunice K. Kakoma is a Clinical Strategic Advisor with more than 15 years of leadership experience in the U.S. healthcare sector, combined with an active board-level consulting practice focused on healthcare operations, maternal health, and strategic systems improvement. She holds a Doctorate in Healthcare Administration (DHA) and maintains strong professional relationships within global maternal health initiatives, including collaborations connected to the Bill & Melinda Gates Foundation. Positioning herself at the intersection of healthcare leadership, policy, and international development, she is an invested member of the U.S.-based Rwandan diaspora. Dr. Kakoma has served as Vice President of the Houston Rwandan Community Abroad and as Youth and Culture Commissioner on the Executive Board of the Rwanda Community Abroad, fostering trusted relationships across the diaspora investment community. In addition to her advisory leadership, she is an active investor in Rwanda with capital deployed across government bonds, residential land acquisitions, and completed twin-apartment development, giving her firsthand experience navigating cross-border investment opportunities, regulatory processes, and execution challenges faced by international investors.</p>
             </div>
           </div>
           <div class="team-slide">
@@ -1233,7 +1239,7 @@
             <div class="team-slide-body">
               <h3>Charles Oligbo MBA</h3>
               <span class="team-role">Executive Director &amp; Investor</span>
-              <p>Charles Oligbo is a U.S.-based entrepreneur and investor with 20+ years building investment presence in Rwanda. He is founder and CEO of Cultuerville Realty LTD and Cultuerville Farms LTD, with diversified investments across residential holdings, agriculture, and multi-family real estate in Rwanda.</p>
+              <p>Charles Oligbo is a U.S.-based entrepreneur and investor with over 20 years of active investment presence in Rwanda, demonstrating deep expertise in navigating cross-border deals and local market dynamics. He is the founder and Chief Executive Officer of Cultuerville Realty LTD and Cultuerville Farms LTD, successfully building diversified investments across residential real estate holdings, agricultural ventures, and multi-family residential properties throughout Rwanda. His personal investment portfolio spans government bonds, residential land acquisitions, and completed multi-unit development projects, providing him with hands-on experience in the full investment lifecycle—from identifying opportunities and negotiating with local authorities to managing construction, regulatory compliance, and portfolio optimization. His experience on the ground in Rwanda, combined with his understanding of diaspora investor needs and pain points, enables him to bridge the gap between international capital and local opportunities with both strategic insight and practical execution capability.</p>
             </div>
           </div>
         </div>
@@ -1616,31 +1622,13 @@
       });
     });
 
-      // Hero Slideshow - Disabled, showing only first image
+      // Hero Slideshow - DISABLED - Only displaying first image, no auto-rotation
     const heroSlides = document.querySelectorAll('.hero-slide');
-    const heroDots = document.querySelectorAll('.hero-slide-dot');
-    let currentHeroSlide = 0;
-
-    function goToHeroSlide(index) {
-      if (!heroSlides.length) return;
-      currentHeroSlide = (index + heroSlides.length) % heroSlides.length;
+    if (heroSlides.length > 0) {
+      // Ensure only the first slide is marked as active and visible
       heroSlides.forEach((slide, i) => {
-        slide.classList.toggle('active', i === currentHeroSlide);
+        slide.classList.toggle('active', i === 0);
       });
-      heroDots.forEach((dot, i) => {
-        dot.classList.toggle('active', i === currentHeroSlide);
-      });
-    }
-
-    if (heroSlides.length) {
-      // Hide all slides except the first one
-      heroSlides.forEach((slide, i) => {
-        if (i !== 0) slide.style.display = 'none';
-      });
-      // Hide the slide dots since we're only showing one slide
-      document.querySelector('.hero-slide-dots').style.display = 'none';
-      // Show only the first slide
-      goToHeroSlide(0);
     }
 
     // Team Carousel
