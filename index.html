@@ -1616,11 +1616,10 @@
       });
     });
 
-      // Hero Slideshow
+      // Hero Slideshow - Disabled, showing only first image
     const heroSlides = document.querySelectorAll('.hero-slide');
     const heroDots = document.querySelectorAll('.hero-slide-dot');
     let currentHeroSlide = 0;
-    let heroSlideTimer;
 
     function goToHeroSlide(index) {
       if (!heroSlides.length) return;
@@ -1633,23 +1632,15 @@
       });
     }
 
-    function startHeroSlideshow() {
-      if (!heroSlides.length) return;
-      clearInterval(heroSlideTimer);
-      heroSlideTimer = setInterval(() => {
-        goToHeroSlide(currentHeroSlide + 1);
-      }, 4500);
-    }
-
     if (heroSlides.length) {
-      heroDots.forEach((dot, index) => {
-        dot.addEventListener('click', () => {
-          goToHeroSlide(index);
-          startHeroSlideshow();
-        });
+      // Hide all slides except the first one
+      heroSlides.forEach((slide, i) => {
+        if (i !== 0) slide.style.display = 'none';
       });
+      // Hide the slide dots since we're only showing one slide
+      document.querySelector('.hero-slide-dots').style.display = 'none';
+      // Show only the first slide
       goToHeroSlide(0);
-      startHeroSlideshow();
     }
 
     // Team Carousel
