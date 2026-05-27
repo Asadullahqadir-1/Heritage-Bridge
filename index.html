@@ -241,11 +241,17 @@
       position: absolute;
       top: 0;
       left: 0;
+      visibility: hidden;
+      opacity: 0;
+      pointer-events: none;
     }
 
     .hero-slide.active {
       display: block;
-      animation: fadeIn 0.5s;
+      visibility: visible;
+      opacity: 1;
+      pointer-events: auto;
+      animation: none;
     }
 
     .hero-slide img {
@@ -265,7 +271,8 @@
       bottom: 20px;
       left: 50%;
       transform: translateX(-50%);
-      display: none;
+      display: none !important;
+      visibility: hidden !important;
       gap: 8px;
       z-index: 10;
     }
@@ -284,10 +291,15 @@
       background: var(--cream);
     }
 
-    /* Hide hero slides 2 and 3 - Disable slideshow */
-    .hero-slide:nth-child(2),
-    .hero-slide:nth-child(3) {
+    /* Hide hero slides 2 and 3 - Disable slideshow completely */
+    .hero-slideshow-container .hero-slide:nth-child(2),
+    .hero-slideshow-container .hero-slide:nth-child(3) {
       display: none !important;
+      visibility: hidden !important;
+      opacity: 0 !important;
+      pointer-events: none !important;
+      height: 0 !important;
+      min-height: 0 !important;
     }
 
     .hero-location-badge {
@@ -1622,13 +1634,31 @@
       });
     });
 
-      // Hero Slideshow - DISABLED - Only displaying first image, no auto-rotation
+      // Hero Slideshow - DISABLED - Only displaying first image with no animation
     const heroSlides = document.querySelectorAll('.hero-slide');
     if (heroSlides.length > 0) {
-      // Ensure only the first slide is marked as active and visible
+      // Ensure only the first slide is visible, others are hidden
       heroSlides.forEach((slide, i) => {
-        slide.classList.toggle('active', i === 0);
+        if (i === 0) {
+          slide.classList.add('active');
+          slide.style.display = 'block';
+          slide.style.visibility = 'visible';
+          slide.style.opacity = '1';
+          slide.style.pointerEvents = 'auto';
+        } else {
+          slide.classList.remove('active');
+          slide.style.display = 'none';
+          slide.style.visibility = 'hidden';
+          slide.style.opacity = '0';
+          slide.style.pointerEvents = 'none';
+        }
       });
+      // Hide the dots
+      const dotsContainer = document.querySelector('.hero-slide-dots');
+      if (dotsContainer) {
+        dotsContainer.style.display = 'none';
+        dotsContainer.style.visibility = 'hidden';
+      }
     }
 
     // Team Carousel
